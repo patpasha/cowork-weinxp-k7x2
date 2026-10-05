@@ -1,0 +1,1299 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Déployer Cowork au cabinet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+html,body{margin:0}[hidden]{display:none!important}img{max-width:100%}
+
+/* Système 100xWorks : angles droits, filets encre, ombres décalées violettes, étiquettes mono en capitales.
+   Layout : sommaire fixe à gauche, colonne de lecture à droite, bande de pixels en ouverture. */
+:root{
+  --paper:#FAF9FC;
+  --sheet:#FFFFFF;
+  --ink:#141218;
+  --muted:#615969;
+  --rule:#DDD5E6;
+  --line:#141218;
+  --accent:#743ADB;
+  --accent-soft:#F1EAFC;
+  --lime:#DFFF75;
+  --on-lime:#141218;
+  --mark:#743ADB;
+  --shadow:#743ADB;
+  --ok:#2A7849; --ok-soft:#E6F3EA;
+  --warn:#9A620B; --warn-soft:#FBF2DE;
+  --stop:#B3372B; --stop-soft:#FBE8E5;
+  --calm:#743ADB; --calm-soft:#F1EAFC;
+  --code-bg:#F4F1F8;
+  --pixel-a:#743ADB; --pixel-b:#A981FF; --pixel-c:#CFC5DA;
+  --f-sans:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --toc-w:288px;
+  --top-h:60px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D0C11; --sheet:#141218; --ink:#FAF8FF; --muted:#AE9DBE; --rule:#2A2432; --line:#4A4157;
+    --accent:#A981FF; --accent-soft:#211A30; --lime:#DFFF75; --on-lime:#141218; --mark:#DFFF75; --shadow:#743ADB;
+    --ok:#7FD39C; --ok-soft:#12251A; --warn:#F0C060; --warn-soft:#2A2112; --stop:#FF8E80; --stop-soft:#2E1614;
+    --calm:#A981FF; --calm-soft:#211A30; --code-bg:#1B1822;
+    --pixel-a:#743ADB; --pixel-b:#A981FF; --pixel-c:#3B3446;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D0C11; --sheet:#141218; --ink:#FAF8FF; --muted:#AE9DBE; --rule:#2A2432; --line:#4A4157;
+  --accent:#A981FF; --accent-soft:#211A30; --lime:#DFFF75; --on-lime:#141218; --mark:#DFFF75; --shadow:#743ADB;
+  --ok:#7FD39C; --ok-soft:#12251A; --warn:#F0C060; --warn-soft:#2A2112; --stop:#FF8E80; --stop-soft:#2E1614;
+  --calm:#A981FF; --calm-soft:#211A30; --code-bg:#1B1822;
+  --pixel-a:#743ADB; --pixel-b:#A981FF; --pixel-c:#3B3446;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--top-h) + 24px)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-sans);font-size:16px;line-height:1.62;letter-spacing:-.006em;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+::selection{background:var(--lime);color:var(--on-lime)}
+a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono,.mod-meta,.eyebrow,.toc-part,th{font-family:var(--f-mono)}
+
+/* ---------- Barre du haut ---------- */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;height:var(--top-h);display:flex;align-items:center;gap:14px;padding-inline:20px;background:var(--sheet);border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;align-items:baseline;gap:0;font-weight:700;font-size:1.12rem;letter-spacing:-.04em;color:var(--ink);text-decoration:none;white-space:nowrap}
+.brand .mark{color:var(--mark);margin-right:7px;font-size:1.2em;line-height:0;position:relative;top:.06em}
+.brand span:last-child{font-weight:500}
+.brand-prod{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.brand-prod .sep{margin:0 10px 0 2px;color:var(--rule)}
+.progress{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:0}
+.progress-label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.progress-track{width:140px;height:8px;border:1px solid var(--line);background:var(--sheet)}
+.progress-fill{height:100%;width:0;background:var(--accent);transition:width .4s steps(8)}
+.theme-switch{display:flex;border:1px solid var(--line)}
+.theme-switch button{font:inherit;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;background:var(--sheet);color:var(--muted);border:0;border-left:1px solid var(--line);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.theme-switch button:first-child{border-left:0}
+.theme-switch button:hover{color:var(--ink)}
+.theme-switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.t-ico{font-size:.9rem;line-height:1}
+.menu-btn{display:none;font:inherit;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border:1px solid var(--line);background:var(--ink);color:var(--paper);cursor:pointer}
+
+/* ---------- Structure ---------- */
+.layout{display:grid;grid-template-columns:var(--toc-w) minmax(0,1fr);max-width:1260px;margin:0 auto}
+.toc{position:sticky;top:calc(var(--top-h) + env(safe-area-inset-top,0px));height:calc(100vh - var(--top-h));overflow-y:auto;padding:28px 18px 40px 22px;border-right:1px solid var(--rule)}
+.toc-part{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:24px 0 8px 8px}
+.toc-part::before{content:"// ";color:var(--muted)}
+.toc-part:first-child{margin-top:0}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:1px}
+.toc a{display:grid;grid-template-columns:26px 1fr auto;align-items:baseline;gap:6px;padding:6px 8px;color:var(--ink);text-decoration:none;font-size:.88rem;line-height:1.35;border:1px solid transparent}
+.toc a:hover{border-color:var(--rule);background:var(--sheet)}
+.toc a.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.toc a.active .num,.toc a.active .count{color:var(--lime)}
+.toc .num{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.toc .tick{width:12px;height:12px;border:1px solid var(--rule);display:inline-block;align-self:center}
+.toc a.done .tick{background:var(--lime);border-color:var(--line)}
+.toc a.active .tick{border-color:var(--paper)}
+.toc .count{font-family:var(--f-mono);font-size:.68rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.toc a.complete .count{color:var(--ok)}
+.toc-reset{margin:26px 8px 0;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.04em;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+main{min-width:0;padding:40px 52px 120px}
+.col{max-width:760px}
+
+/* ---------- Ouverture ---------- */
+.hero{padding-bottom:40px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.pixels{display:block;width:100%;height:112px;margin:0 0 30px;image-rendering:pixelated}
+.eyebrow{display:inline-block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--lime);color:var(--on-lime);border:1px solid var(--line);padding:4px 9px;margin:0 0 22px}
+h1{font-weight:600;font-size:clamp(2.3rem,5.2vw,3.5rem);line-height:1.02;letter-spacing:-.058em;margin:0 0 20px;text-wrap:balance}
+h1 span{color:var(--accent)}
+.lead{font-size:1.08rem;color:var(--muted);max-width:60ch;margin:0 0 26px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin:0;padding:0;list-style:none;font-size:.86rem;border:1px solid var(--line);background:var(--line)}
+.facts li{display:flex;flex-direction:column;gap:2px;padding:8px 14px;background:var(--paper)}
+.facts b{font-family:var(--f-mono);font-weight:500;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+
+/* ---------- Modules ---------- */
+.module{padding:60px 0 24px;border-bottom:1px solid var(--rule)}
+.mod-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:24px}
+.folio{font-family:var(--f-mono);font-size:.74rem;font-weight:500;letter-spacing:.06em;background:var(--ink);color:var(--paper);padding:3px 9px;font-variant-numeric:tabular-nums}
+.folio::before{content:"[ "}
+.folio::after{content:" ]"}
+.mod-meta{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h2{flex-basis:100%;font-weight:600;font-size:2.15rem;line-height:1.08;letter-spacing:-.05em;margin:6px 0 0;text-wrap:balance}
+h3{font-weight:600;font-size:1.32rem;line-height:1.25;letter-spacing:-.035em;margin:40px 0 12px;text-wrap:balance}
+h4{font-size:.95rem;font-weight:600;letter-spacing:-.015em;margin:22px 0 6px}
+p{margin:0 0 14px}
+.module ul,.module ol{padding-left:1.25em;margin:0 0 16px}
+.module li{margin-bottom:6px}
+.module ul:not([class])>li::marker{color:var(--accent)}
+strong{font-weight:600}
+
+.goals{background:var(--sheet);border:1px solid var(--line);padding:14px 18px;margin:0 0 28px}
+.goals p{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.goals p::before{content:"+ "}
+.goals ul{margin:0;padding-left:1.15em}
+.goals li{margin-bottom:3px}
+
+/* Étapes */
+.steps{list-style:none;padding:0!important;margin:10px 0 22px;counter-reset:step;display:grid}
+.steps>li{counter-increment:step;position:relative;padding:14px 0 14px 54px;min-height:54px;border-top:1px solid var(--rule);margin:0}
+.steps>li:first-child{border-top:0}
+.steps>li::before{content:counter(step,decimal-leading-zero);position:absolute;left:0;top:12px;display:grid;place-items:center;width:32px;height:26px;border:1px solid var(--line);font-family:var(--f-mono);font-size:.74rem;color:var(--accent);background:var(--sheet)}
+.steps p{margin:4px 0 0}
+
+.path{display:inline-flex;flex-wrap:wrap;align-items:center;font-family:var(--f-mono);font-size:.78em;letter-spacing:.01em;background:var(--code-bg);border:1px solid var(--rule);padding:0 6px;white-space:normal}
+kbd{font-family:var(--f-mono);font-size:.78em;border:1px solid var(--line);box-shadow:2px 2px 0 var(--line);padding:0 5px;background:var(--sheet)}
+code{font-family:var(--f-mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;word-break:break-word}
+
+/* Encadrés */
+.note{padding:14px 18px 4px;margin:22px 0;border:1px solid var(--line);background:var(--sheet)}
+.note-label{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;margin:0 0 6px;display:inline-block;padding:2px 7px}
+.note--key .note-label{background:var(--accent-soft);color:var(--accent)}
+.note--key .note-label::before{content:"→ "}
+.note--warn{background:var(--warn-soft);border-color:var(--warn)}
+.note--warn .note-label{color:var(--warn);padding-left:0}
+.note--warn .note-label::before{content:"! "}
+.note--stop{background:var(--stop-soft);border-color:var(--stop)}
+.note--stop .note-label{color:var(--stop);padding-left:0}
+.note--stop .note-label::before{content:"× "}
+.note--calm{background:var(--lime);border-color:var(--line);color:var(--on-lime)}
+.note--calm .note-label{color:var(--on-lime);padding-left:0}
+.note--calm .note-label::before{content:"+ "}
+.note--calm a{color:var(--on-lime)}
+.note ul{margin-bottom:12px}
+
+/* Prompts à copier : petite fenêtre */
+.prompt{margin:14px 0 20px;border:1px solid var(--line);background:var(--sheet)}
+.prompt-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 6px 6px 12px;border-bottom:1px solid var(--line);background:var(--code-bg)}
+.prompt-head span{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.prompt-head span::before{content:"▤ ";color:var(--accent)}
+.copy{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--paper);background:var(--ink);border:1px solid var(--ink);padding:4px 10px;cursor:pointer}
+.copy:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.copy.copied{background:var(--lime);border-color:var(--line);color:var(--on-lime)}
+.prompt pre{margin:0;padding:14px 16px;font-family:var(--f-mono);font-size:.8rem;line-height:1.65;white-space:pre-wrap;word-wrap:break-word;color:var(--ink)}
+.prompt.shell pre{white-space:pre;overflow-x:auto}
+
+/* Exercices : fenêtre « workspace » avec ombre décalée */
+.exo{margin:34px 6px 34px 0;border:1px solid var(--line);background:var(--sheet);padding:0 20px 8px;box-shadow:6px 6px 0 var(--shadow)}
+.exo-head{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin:0 -20px 18px;padding:8px 14px 8px 20px;background:var(--ink);color:var(--paper);font-family:var(--f-mono)}
+.exo-head b{font-weight:500;font-size:.76rem;letter-spacing:.02em}
+.exo-head span{margin-left:auto;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime)}
+.exo-head::after{content:"–  □  ×";font-size:.72rem;letter-spacing:.1em;opacity:.6}
+.checklist{list-style:none;padding:0!important}
+.checklist li{position:relative;padding-left:26px}
+.checklist li::before{content:"";position:absolute;left:2px;top:.38em;width:12px;height:12px;border:1px solid var(--line)}
+details{margin:12px 0 16px;border-top:1px solid var(--rule)}
+summary{cursor:pointer;font-weight:600;padding:10px 0 4px;color:var(--accent);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";display:inline-block;width:1.3em;font-family:var(--f-mono)}
+details[open] summary::before{content:"–"}
+details[open] summary{margin-bottom:6px}
+
+/* Comparaisons */
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:16px 0 22px;border:1px solid var(--line)}
+.compare>div{padding:14px 16px;background:var(--sheet);min-width:0;border:0!important}
+.compare>div+div{border-left:1px solid var(--line)!important}
+.compare h4{margin:0 0 8px;font-family:var(--f-mono);font-weight:500;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase}
+.compare .bad h4{color:var(--stop)}
+.compare .bad h4::before{content:"× "}
+.compare .good h4{color:var(--ok)}
+.compare .good h4::before{content:"✓ "}
+.compare p.q{font-family:var(--f-mono);font-size:.8rem;margin-bottom:10px}
+.compare p.why{font-size:.88rem;color:var(--muted);margin:0}
+
+/* Tableaux */
+.table-wrap{overflow-x:auto;margin:14px 0 22px;border:1px solid var(--line);background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:580px}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--rule)}
+th{font-weight:500;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);background:var(--ink);border-bottom-color:var(--ink)}
+tr:last-child td{border-bottom:0}
+td em{color:var(--muted)}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.64rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;white-space:nowrap;border:1px solid currentColor}
+.pill--ok{background:var(--ok-soft);color:var(--ok)}
+.pill--warn{background:var(--warn-soft);color:var(--warn)}
+.pill--stop{background:var(--stop-soft);color:var(--stop)}
+.pill--neutral{background:var(--code-bg);color:var(--muted)}
+
+.charte{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:16px 0 22px;border:1px solid var(--line)}
+.charte>div{background:var(--sheet);padding:14px 16px;min-width:0}
+.charte>div+div{border-left:1px solid var(--line)}
+.charte h4{margin:0 0 10px}
+.charte ul{padding-left:1.1em;margin:0;font-size:.88rem}
+
+.terms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0 22px}
+.terms>div{background:var(--sheet);border:1px solid var(--rule);padding:12px 14px;min-width:0}
+.terms dt{font-weight:600;letter-spacing:-.015em;margin:0 0 2px}
+.terms dd{margin:0;font-size:.88rem;color:var(--muted)}
+.terms dd i{color:var(--ink);font-style:normal}
+
+/* Quiz */
+.quiz{margin:28px 0;padding:14px 18px;border:1px dashed var(--line)}
+.quiz-title{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+.quiz-title::before{content:"? "}
+.qitem{padding:10px 0;border-top:1px solid var(--rule)}
+.qitem:first-of-type{border-top:0}
+.qitem p.q{font-weight:600;margin:0 0 8px}
+.q-actions{display:flex;gap:8px}
+.q-actions button{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer}
+.q-actions button:hover{background:var(--accent-soft)}
+.q-actions button.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.q-actions button.wrong{background:var(--stop-soft);border-color:var(--stop);color:var(--stop)}
+.q-answer{margin:8px 0 0;font-size:.9rem}
+
+/* Fin de module */
+.mod-end{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin:36px 0 0;padding:18px 0 0;border-top:1px solid var(--rule)}
+.done-btn{font-family:var(--f-mono);font-size:.74rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:11px 18px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--shadow);cursor:pointer;transition:transform .08s steps(2),box-shadow .08s steps(2)}
+.done-btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
+.done-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--shadow)}
+.done-btn.is-done{background:var(--lime);color:var(--on-lime);border-color:var(--line);box-shadow:4px 4px 0 var(--line)}
+.next-link{font-size:.88rem;font-weight:600}
+
+/* Bibliothèque de prompts */
+.filters{display:flex;flex-wrap:wrap;gap:0;margin:12px 0 18px;border:1px solid var(--line);width:fit-content;max-width:100%}
+.chip{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border:0;border-right:1px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer}
+.chip:last-child{border-right:0}
+.chip:hover{background:var(--accent-soft)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.lib-item h4{margin:0;padding:14px 0 0}
+.lib-item .prompt{margin-top:8px}
+
+/* Fiche mémo */
+.memo{background:var(--sheet);border:1px solid var(--line);box-shadow:8px 8px 0 var(--lime);padding:24px 26px;margin:18px 10px 18px 0}
+.memo h3{margin:0 0 4px}
+.memo .sub{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.memo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px}
+.memo-grid>div{min-width:0;border-top:1px solid var(--line);padding-top:10px}
+.memo-grid h4{margin:0 0 6px;font-size:.66rem;font-family:var(--f-mono);font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.memo-grid ul,.memo-grid ol{margin:0;padding-left:1.15em;font-size:.9rem}
+
+/* Plan de déploiement (guide admin) */
+.tasks{list-style:none;padding:0!important;margin:18px 6px 24px 0;border:1px solid var(--line);background:var(--sheet);box-shadow:6px 6px 0 var(--shadow)}
+.tasks-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 14px 8px 16px;background:var(--ink);color:var(--paper);font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
+.tasks-head .tasks-count{color:var(--lime)}
+.tasks li{margin:0!important;border-top:1px solid var(--rule)}
+.tasks li.tasks-head{border-top:0}
+.tasks label{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;align-items:start;padding:11px 16px;cursor:pointer}
+.tasks label:hover{background:var(--accent-soft)}
+.tasks input{appearance:none;-webkit-appearance:none;width:16px;height:16px;margin:4px 0 0;border:1px solid var(--line);background:var(--sheet);cursor:pointer;display:grid;place-items:center}
+.tasks input:checked{background:var(--lime)}
+.tasks input:checked::after{content:"✓";font-size:12px;line-height:1;color:var(--on-lime);font-weight:700}
+.tasks label span small{display:block;color:var(--muted);font-size:.85rem}
+.tasks input:checked + span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--rule)}
+.who{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border:1px solid var(--rule);color:var(--accent);margin-left:6px;white-space:nowrap;display:inline-block;text-decoration:none}
+.phases{display:grid;margin:16px 0 22px;border-left:1px solid var(--line)}
+.phase{position:relative;padding:2px 0 20px 24px}
+.phase::before{content:"";position:absolute;left:-6px;top:7px;width:11px;height:11px;background:var(--lime);border:1px solid var(--line)}
+.phase h4{margin:2px 0 2px}
+.phase .when{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.phase p{margin:4px 0 0;font-size:.92rem}
+
+/* Composants de l'aperçu « créer une bonne skill » */
+.skill-doc{min-width:540px;background:var(--sheet);border:1px solid var(--rule);border-radius:10px;overflow:hidden;font-size:12.5px}
+.skill-doc .sd-bar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--code-bg);border-bottom:1px solid var(--rule);font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.skill-doc .sd-part{display:grid;grid-template-columns:24px 120px minmax(0,1fr);gap:10px;align-items:start;padding:10px 14px;border-bottom:1px dashed var(--rule)}
+.skill-doc .sd-part:last-child{border-bottom:0}
+.skill-doc .sd-part.key{background:var(--accent-soft)}
+.skill-doc .sd-k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:2px}
+.skill-doc .sd-v{min-width:0}
+.skill-doc .sd-v ul{margin:0;padding-left:1.1em}
+.skill-doc .sd-v li{margin:0}
+.skill-doc .sd-v code{font-size:11.5px}
+.test-table td:nth-child(3){white-space:nowrap}
+.obs{display:inline-flex;gap:6px}
+.obs span{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);padding:2px 7px}
+.filetree{font-family:var(--f-mono);font-size:.8rem;line-height:1.75;background:var(--sheet);border:1px solid var(--line);padding:14px 18px;margin:14px 0 20px;overflow-x:auto;white-space:pre}
+.filetree b{color:var(--accent);font-weight:500}
+.filetree i{color:var(--muted);font-style:normal}
+.lifecycle{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;border:1px solid var(--line);margin:16px 0 22px;background:var(--sheet)}
+.lifecycle>div{padding:12px 10px;border-right:1px solid var(--line);min-width:0;font-size:.84rem}
+.lifecycle>div:last-child{border-right:0;background:var(--lime);color:var(--on-lime)}
+.lifecycle .n{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.1em;color:var(--accent);display:block;margin-bottom:4px}
+.lifecycle>div:last-child .n{color:var(--on-lime)}
+.lifecycle b{display:block;font-weight:600;margin-bottom:2px}
+.skill-doc.two{min-width:680px}
+.skill-doc.two .sd-part{grid-template-columns:24px 96px minmax(0,1fr) minmax(0,1fr)}
+.skill-doc.two .sd-head{display:grid;grid-template-columns:24px 96px minmax(0,1fr) minmax(0,1fr);gap:10px;padding:8px 14px;background:var(--code-bg);border-bottom:1px solid var(--rule);font-family:var(--f-mono);font-size:11px;color:var(--ink)}
+.skill-doc.two .sd-head span:nth-child(n+3){display:flex;flex-direction:column;gap:2px}
+.skill-doc.two .sd-head small{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+@media (max-width:760px){.lifecycle{grid-template-columns:repeat(2,minmax(0,1fr))}.lifecycle>div{border-bottom:1px solid var(--line)}}
+.foot{margin-top:60px;font-size:.82rem;color:var(--muted)}
+.credit{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.credit .brand{font-family:var(--f-sans);text-transform:none;font-size:1rem;letter-spacing:-.04em}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1080px){ .brand-prod{display:none} .facts{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width: 980px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .menu-btn{display:inline-block}
+  .toc{display:none;position:fixed;inset:calc(var(--top-h) + env(safe-area-inset-top,0px)) 0 0 0;height:auto;z-index:25;background:var(--sheet);border-right:0;padding:22px 20px 60px}
+  .toc.open{display:block}
+  main{padding:28px 20px 100px}
+  .progress-track{width:80px}
+}
+@media (max-width: 640px){
+  .topbar{gap:10px;padding-inline:16px}
+  .progress-label,.progress-track{display:none}
+  .t-lbl{display:none}
+  .theme-switch button{padding:5px 8px}
+  .compare,.charte,.terms,.memo-grid{grid-template-columns:minmax(0,1fr)}
+  .compare>div+div,.charte>div+div{border-left:0!important;border-top:1px solid var(--line)!important}
+  h2{font-size:1.7rem}
+  .exo{padding:0 16px 6px}
+  .exo-head{margin:0 -16px 14px;padding:8px 12px 8px 16px}
+  .exo-head::after{display:none}
+  .memo{padding:18px}
+  .pixels{height:80px}
+}
+</style>
+
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="https://thejarvis.company/100xWorks/" target="_blank" rel="noopener" aria-label="100xWorks"><span class="mark" aria-hidden="true">✳</span>100x<span>works</span></a>
+  <span class="brand-prod"><span class="sep">/</span>Déployer Cowork · Guide administrateur</span>
+  <div class="progress" aria-live="polite">
+    <span class="progress-label" id="progressLabel">0 / 0 actions</span>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+  <div class="theme-switch" role="group" aria-label="Thème d'affichage">
+    <button type="button" data-theme-set="auto" aria-pressed="true" aria-label="Thème automatique"><span class="t-ico" aria-hidden="true">◐</span><span class="t-lbl">Auto</span></button>
+    <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Thème clair"><span class="t-ico" aria-hidden="true">☀</span><span class="t-lbl">Clair</span></button>
+    <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Thème sombre"><span class="t-ico" aria-hidden="true">☾</span><span class="t-lbl">Sombre</span></button>
+  </div>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="toc">Sommaire</button>
+</header>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Sommaire">
+    <p class="toc-part">Préparer</p>
+    <ol>
+      <li><a href="#a0"><span class="num">00</span><span>Votre rôle et le plan</span><span class="count"></span></a></li>
+      <li><a href="#a1"><span class="num">01</span><span>Décisions et conformité</span><span class="count"></span></a></li>
+    </ol>
+    <p class="toc-part">Configurer</p>
+    <ol>
+      <li><a href="#a2"><span class="num">02</span><span>Membres, rôles, sièges</span><span class="count"></span></a></li>
+      <li><a href="#a3"><span class="num">03</span><span>Installer sur les postes</span><span class="count"></span></a></li>
+      <li><a href="#a4"><span class="num">04</span><span>Réglages de sécurité</span><span class="count"></span></a></li>
+      <li><a href="#a5"><span class="num">05</span><span>Connecteurs M365 et Pennylane</span><span class="count"></span></a></li>
+      <li><a href="#a6"><span class="num">06</span><span>Skills du cabinet</span><span class="count"></span></a></li>
+      <li><a href="#a7"><span class="num">07</span><span>Plugins</span><span class="count"></span></a></li>
+    </ol>
+    <p class="toc-part">Lancer et faire vivre</p>
+    <ol>
+      <li><a href="#a8"><span class="num">08</span><span>Pilote et lancement</span><span class="count"></span></a></li>
+      <li><a href="#a9"><span class="num">09</span><span>Suivi et maintenance</span><span class="count"></span></a></li>
+    </ol>
+    <p class="toc-part">Annexes</p>
+    <ol>
+      <li><a href="#modeles"><span class="num">A</span><span>Modèles à copier</span><span class="count"></span></a></li>
+      <li><a href="#depannage"><span class="num">B</span><span>Dépannage</span><span class="count"></span></a></li>
+      <li><a href="#liens"><span class="num">C</span><span>Liens officiels</span><span class="count"></span></a></li>
+    </ol>
+    <button class="toc-reset" id="resetBtn" type="button">Décocher toutes les actions</button>
+  </nav>
+
+  <main>
+    <div class="col">
+
+    <header class="hero">
+      <canvas class="pixels" id="pixels" aria-hidden="true"></canvas>
+      <p class="eyebrow">Guide administrateur · Cabinet d'expertise comptable</p>
+      <h1>Mettre en place Claude Cowork.<br><span>Pour toute l'équipe.</span></h1>
+      <p class="lead">Ce guide accompagne la personne chargée de déployer Claude au cabinet : associé, responsable informatique ou référent IA. Il couvre les décisions à prendre, les réglages à faire, et la façon de lancer l'outil auprès des collaborateurs. Chaque action se coche : la barre en haut suit votre avancement.</p>
+      <ul class="facts">
+        <li><b>Offre</b> Claude Team</li>
+        <li><b>Postes</b> Windows</li>
+        <li><b>Messagerie</b> Microsoft 365</li>
+        <li><b>Durée</b> 4 à 6 semaines, pilote compris</li>
+      </ul>
+    </header>
+
+    <!-- ============ A0 ============ -->
+    <section class="module" id="a0">
+      <div class="mod-head">
+        <span class="folio">00</span>
+        <span class="mod-meta">10 min · à lire</span>
+        <h2>Votre rôle et le plan de déploiement</h2>
+      </div>
+
+      <p>Le déploiement de Cowork tient en trois mots : <strong>cadrer, configurer, accompagner</strong>. La partie technique prend quelques heures. Ce qui fait réussir ou échouer le projet, c'est le cadre (ce qui est autorisé) et l'accompagnement des collaborateurs dans les premières semaines.</p>
+
+      <h3>Qui fait quoi</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rôle</th><th>Missions</th><th>Qui, typiquement</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Propriétaire Claude</strong><br><em>Primary Owner / Owner</em></td><td>Abonnement, sièges, réglages de l'organisation, connecteurs, plugins et skills partagés.</td><td>Un associé, ou le responsable informatique.</td></tr>
+            <tr><td><strong>Administrateur Microsoft</strong><br><em>Global Administrator Entra</em></td><td>Consentement unique pour le connecteur Microsoft 365. Déploiement de l'application sur les postes.</td><td>Le prestataire ou le service informatique.</td></tr>
+            <tr><td><strong>Référent IA</strong></td><td>Premier niveau d'aide, animation, collecte des besoins, création des skills du cabinet.</td><td>Un collaborateur motivé, à l'aise avec les outils.</td></tr>
+            <tr><td><strong>Direction</strong></td><td>Valider la charte d'usage et les choix de conformité.</td><td>Les associés.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Le plan en cinq phases</h3>
+      <div class="phases">
+        <div class="phase"><span class="when">Semaine 1</span><h4>Décider et cadrer</h4><p>Charte d'usage, référent IA, conformité RGPD, groupe pilote. <a href="#a1">Module 1</a></p></div>
+        <div class="phase"><span class="when">Semaines 1 à 2</span><h4>Configurer</h4><p>Membres, installation des postes, réglages de sécurité, Microsoft 365, premières skills. <a href="#a2">Modules 2 à 7</a></p></div>
+        <div class="phase"><span class="when">Semaines 3 à 4</span><h4>Piloter</h4><p>Trois à cinq collaborateurs suivent le guide et remontent ce qui coince. <a href="#a8">Module 8</a></p></div>
+        <div class="phase"><span class="when">Semaine 5</span><h4>Généraliser</h4><p>Invitation de toute l'équipe, annonce, permanences de questions. <a href="#a8">Module 8</a></p></div>
+        <div class="phase"><span class="when">Chaque mois</span><h4>Faire vivre</h4><p>Revue des accès, des demandes de skills, des nouveautés. <a href="#a9">Module 9</a></p></div>
+      </div>
+
+      <aside class="note note--key">
+        <p class="note-label">Le guide collaborateurs</p>
+        <p>Ce guide va de pair avec le guide d'autoformation des collaborateurs, <a href="../" target="_blank" rel="noopener"><em>Cowork au cabinet</em></a>. Celui-ci leur indique de passer par le référent IA et renvoie à la charte : il faut donc que ces deux éléments existent avant le lancement.</p>
+      </aside>
+
+      <aside class="note note--warn" style="margin-top:-4px">
+        <p class="note-label">Évolution annoncée de l'interface</p>
+        <p>Le 16/09/2026, Anthropic a fusionné Chat et Cowork en une seule interface (« Cowork is now Claude ») sur les offres Pro et Max. Les offres Team suivront « bientôt ». Les chats, projets, connecteurs et skills existants sont conservés. Prévoyez de prévenir les collaborateurs le moment venu : le choix Chat / Cowork disparaîtra, et les instructions globales passeront dans <span class="path">Settings (Réglages) › General (Général)</span>. Le guide collaborateurs l'anticipe déjà.</p>
+      </aside>
+    </section>
+
+    <!-- ============ A1 ============ -->
+    <section class="module" id="a1">
+      <div class="mod-head">
+        <span class="folio">01</span>
+        <span class="mod-meta">Semaine 1 · décisions de la direction</span>
+        <h2>Décisions et conformité</h2>
+      </div>
+
+      <p>Un cabinet d'expertise comptable est tenu au secret professionnel et traite des données personnelles en masse. Avant d'ouvrir l'outil, la direction prend quelques décisions simples et les écrit.</p>
+
+      <h3>Ce que l'offre Team garantit</h3>
+      <ul>
+        <li><strong>Pas d'entraînement sur vos données.</strong> Les conditions commerciales d'Anthropic excluent l'utilisation des contenus des clients professionnels pour entraîner les modèles.</li>
+        <li><strong>Accès limité.</strong> Claude ne voit que les dossiers que chaque collaborateur connecte, et dans Microsoft 365 uniquement ce que la personne voit déjà.</li>
+        <li><strong>Contrôle centralisé.</strong> Vous décidez des fonctions, connecteurs, plugins et skills disponibles.</li>
+      </ul>
+
+      <h3>Ce qu'il faut savoir sur le stockage</h3>
+      <ul>
+        <li>Les sessions Cowork <strong>locales</strong> sont conservées sur l'ordinateur du collaborateur. Elles ne suivent pas la politique de conservation d'Anthropic, et l'administrateur ne peut pas les supprimer à distance. Pensez-y au départ d'un collaborateur (voir <a href="#a9">module 9</a>).</li>
+        <li>Les sessions dans le <strong>cloud</strong> sont rattachées au compte Claude du membre.</li>
+        <li>Les durées de conservation personnalisées sont réservées à l'offre Enterprise. En Team, les règles standard d'Anthropic s'appliquent.</li>
+        <li>Le propriétaire principal peut exporter les données de l'organisation depuis <span class="path">Organization settings (Paramètres de l'organisation) › Data and privacy (Données et confidentialité)</span>.</li>
+      </ul>
+
+      <h3>Les actions à mener</h3>
+      <ul class="tasks" data-group="a1">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a1-charte"><span>Faire valider la charte d'usage par les associés <span class="who">Direction</span><small>Un modèle prêt à adapter se trouve en <a href="#modeles">annexe A</a>. Il reprend le tableau Autorisé / Avec précaution / Interdit du guide collaborateurs.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a1-referent"><span>Désigner le référent IA <span class="who">Direction</span><small>Prévoir 2 à 3 heures par semaine pendant le premier mois, puis une heure par semaine.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a1-registre"><span>Mettre à jour le registre des traitements RGPD <span class="who">DPO / Direction</span><small>Ajouter l'usage d'un outil d'IA générative : finalités (assistance à la rédaction, au traitement documentaire), catégories de données, sous-traitant (Anthropic), transferts hors UE.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a1-dpa"><span>Archiver les conditions commerciales et l'accord de traitement des données (DPA) d'Anthropic <span class="who">Direction</span><small>Ils encadrent le rôle de sous-traitant et les garanties pour les transferts de données hors de l'Union européenne.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a1-aipd"><span>Évaluer si une analyse d'impact (AIPD) est nécessaire <span class="who">DPO</span><small>À trancher avec votre DPO ou votre conseil RGPD, selon le volume et la nature des données confiées.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a1-clients"><span>Décider de l'information des clients <span class="who">Direction</span><small>Par exemple une clause dans les lettres de mission (modèle en <a href="#modeles">annexe A</a>), et une procédure pour les clients qui refusent.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a1-pilote"><span>Choisir le groupe pilote <span class="who">Direction + référent</span><small>Trois à cinq personnes, de profils variés : un collaborateur à l'aise, un plus réticent, un manager.</small></span></label></li>
+      </ul>
+
+      <aside class="note note--warn">
+        <p class="note-label">À vérifier côté profession</p>
+        <p>Les instances de la profession publient régulièrement des recommandations sur l'usage de l'IA en cabinet. Vérifiez les dernières publications du Conseil supérieur de l'Ordre des experts-comptables avant de figer la charte.</p>
+      </aside>
+    </section>
+
+    <!-- ============ A2 ============ -->
+    <section class="module" id="a2">
+      <div class="mod-head">
+        <span class="folio">02</span>
+        <span class="mod-meta">30 min · claude.ai</span>
+        <h2>Membres, rôles et sièges</h2>
+      </div>
+
+      <p>Toute l'administration se fait depuis <strong>claude.ai</strong> (ou l'application), menu <span class="path">Organization settings (Paramètres de l'organisation)</span>, accessible depuis votre nom en bas à gauche.</p>
+
+      <h3>Les quatre rôles de l'offre Team</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rôle</th><th>Peut faire</th><th>Au cabinet</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Primary Owner</strong></td><td>Tout. Un seul par organisation. Peut être un compte de service.</td><td>L'associé qui porte le contrat.</td></tr>
+            <tr><td><strong>Owner</strong></td><td>Facturation, sécurité, statistiques, connecteurs, plugins, skills, gestion des membres et des rôles.</td><td>Le responsable informatique.</td></tr>
+            <tr><td><strong>Admin</strong></td><td>Inviter et retirer des membres, certaines intégrations et réglages.</td><td>Le référent IA, si besoin.</td></tr>
+            <tr><td><strong>User</strong></td><td>Utiliser Claude, sans droits d'administration.</td><td>Tous les collaborateurs.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Plusieurs réglages de ce guide (Cowork, connecteurs, plugins, skills, mémoire) demandent le rôle <strong>Owner</strong> ou <strong>Primary Owner</strong>.</p>
+
+      <h3>Les types de sièges</h3>
+      <ul>
+        <li><strong>Standard</strong> : fonctions de base, limites d'utilisation standard. Suffisant pour la plupart des collaborateurs.</li>
+        <li><strong>Premium</strong> : limites d'utilisation plus élevées. Pour les gros utilisateurs, le référent IA par exemple.</li>
+      </ul>
+      <p>Les sièges s'achètent dans <span class="path">Organization settings (Paramètres de l'organisation) › Billing (Facturation)</span> (Owners et Primary Owner uniquement). Commencez en Standard pour tout le monde, et passez en Premium les personnes qui atteignent régulièrement leurs limites.</p>
+
+      <h3>Inviter les membres</h3>
+      <ol class="steps">
+        <li><strong>Vérifiez le domaine e-mail autorisé</strong><p>Seules les adresses du domaine du cabinet peuvent être invitées.</p></li>
+        <li><strong>Ouvrez <span class="path">Organization settings (Paramètres de l'organisation) › Members (Membres)</span>, puis <em>Add member</em> (Ajouter un membre)</strong><p>Saisissez l'adresse, le type de siège et le rôle, puis <em>Add members</em> (Ajouter des membres). Pour plusieurs personnes, utilisez <em>Bulk add</em> (Ajout groupé) et collez les adresses séparées par des virgules ou des retours à la ligne.</p></li>
+        <li><strong>Prévenez les personnes invitées</strong><p>L'invitation arrive par e-mail et expire au bout de 21 jours. Un collaborateur qui a déjà un compte Claude personnel avec son adresse professionnelle est invité à le rattacher au cabinet.</p></li>
+      </ol>
+
+      <aside class="note note--warn">
+        <p class="note-label">Le lien d'invitation</p>
+        <p>En Team, un lien d'invitation partageable est activé par défaut (<span class="path">Organization settings (Paramètres de l'organisation) › Organization and access (Organisation et accès)</span>). Il est pratique, mais toute personne qui l'obtient avec une adresse du domaine peut rejoindre l'espace. Pour garder la main sur les sièges, invitez nominativement et désactivez le lien si vous ne vous en servez pas.</p>
+      </aside>
+
+      <ul class="tasks" data-group="a2">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a2-roles"><span>Attribuer les rôles Owner et Admin <span class="who">Primary Owner</span><small>Au moins deux Owners, pour ne jamais dépendre d'une seule personne.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a2-sieges"><span>Acheter les sièges nécessaires au pilote <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a2-lien"><span>Décider du sort du lien d'invitation <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a2-pilote"><span>Inviter le groupe pilote et le référent IA <span class="who">Admin</span><small>Le reste de l'équipe sera invité au lancement (module 8).</small></span></label></li>
+      </ul>
+    </section>
+
+    <!-- ============ A3 ============ -->
+    <section class="module" id="a3">
+      <div class="mod-head">
+        <span class="folio">03</span>
+        <span class="mod-meta">1 à 2 h · service informatique</span>
+        <h2>Installer l'application sur les postes Windows</h2>
+      </div>
+
+      <p>Cowork a besoin de l'application <strong>Claude Desktop</strong> pour travailler sur les fichiers des postes. Deux options : chaque collaborateur l'installe lui-même, ou le service informatique la déploie.</p>
+
+      <aside class="note note--stop">
+        <p class="note-label">Point bloquant fréquent en cabinet</p>
+        <ul>
+          <li><strong>Droits administrateur</strong> : en installation individuelle, un utilisateur standard peut installer l'application, mais <strong>n'aura pas accès à Cowork</strong>. Dans un parc où les utilisateurs ne sont pas administrateurs de leur poste, c'est le service informatique qui doit déployer l'application.</li>
+          <li><strong>Bureaux à distance</strong> : la virtualisation imbriquée n'est pas prise en charge. Si les collaborateurs travaillent dans un bureau distant (RDS, Citrix, VDI hébergé chez l'éditeur du logiciel comptable), installez Claude sur le <strong>poste physique</strong>, pas dans la session distante.</li>
+        </ul>
+      </aside>
+
+      <h3>Prérequis sur chaque poste</h3>
+      <p>Cowork s'appuie sur la fonctionnalité Windows <strong>Virtual Machine Platform</strong>. Elle doit être activée, puis le poste redémarré. Commande PowerShell, à lancer en administrateur :</p>
+      <div class="prompt shell">
+        <div class="prompt-head"><span>PowerShell (administrateur)</span><button class="copy" type="button">Copier</button></div>
+        <pre>Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -NoRestart</pre>
+      </div>
+
+      <h3>Option A : déploiement par le service informatique (recommandé)</h3>
+      <ol class="steps">
+        <li><strong>Téléchargez le paquet MSIX</strong><p>Depuis l'article officiel <a href="https://support.claude.com/en/articles/12622703-deploy-claude-desktop-for-windows" target="_blank" rel="noopener">Deploy Claude Desktop for Windows</a> : version x64 (la plus courante) ou arm64.</p></li>
+        <li><strong>Installez pour tous les utilisateurs du poste</strong><p>Avec la commande ci-dessous, via Intune (application Win32 ou script), SCCM, une stratégie de groupe ou PowerShell.</p></li>
+        <li><strong>Activez Virtual Machine Platform et redémarrez</strong> (commande ci-dessus).</li>
+        <li><strong>Décidez de la gestion des mises à jour</strong><p>Par défaut, l'application vérifie les mises à jour toutes les 4 heures environ. Vous pouvez désactiver la mise à jour automatique par stratégie (<code>disableAutoUpdates</code>) et piloter les versions par votre outil de gestion. Pour un petit parc, laissez la mise à jour automatique.</p></li>
+      </ol>
+      <div class="prompt shell">
+        <div class="prompt-head"><span>PowerShell : installation pour tous les utilisateurs</span><button class="copy" type="button">Copier</button></div>
+        <pre>Add-AppxProvisionedPackage -Online -PackagePath "Claude.msix" -SkipLicense</pre>
+      </div>
+      <aside class="note note--warn">
+        <p class="note-label">Piège Intune</p>
+        <p>Le MSIX est empaqueté par utilisateur. Le publier dans Intune comme application métier (<em>line-of-business</em>) l'installe dans le contexte de l'utilisateur, ce qui échoue pour les utilisateurs standard. Passez par <code>Add-AppxProvisionedPackage</code>, dans une application Win32 ou un script.</p>
+      </aside>
+
+      <h3>Option B : installation par chaque collaborateur</h3>
+      <p>Possible uniquement si les collaborateurs sont administrateurs de leur poste. Ils téléchargent l'application sur <a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a> et suivent le module 3 du guide collaborateurs. Une fenêtre de contrôle Windows (UAC) demandera les droits administrateur.</p>
+
+      <ul class="tasks" data-group="a3">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a3-inventaire"><span>Vérifier le parc : droits des utilisateurs, bureaux à distance, processeurs x64 ou ARM <span class="who">Informatique</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a3-vmp"><span>Activer Virtual Machine Platform sur les postes pilotes et redémarrer <span class="who">Informatique</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a3-deploy"><span>Déployer l'application sur les postes pilotes <span class="who">Informatique</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a3-test"><span>Tester sur un poste : connexion avec un compte pilote, option Cowork visible, connexion d'un dossier <span class="who">Référent</span></span></label></li>
+      </ul>
+    </section>
+
+    <!-- ============ A4 ============ -->
+    <section class="module" id="a4">
+      <div class="mod-head">
+        <span class="folio">04</span>
+        <span class="mod-meta">30 min · Owner</span>
+        <h2>Réglages de sécurité de l'organisation</h2>
+      </div>
+
+      <p>Voici les réglages qui comptent, leur valeur par défaut en Team, et ce que nous recommandons pour un cabinet. L'idée : <strong>démarrer prudemment, ouvrir progressivement</strong>.</p>
+
+      <h3>Cowork</h3>
+      <p><span class="path">Organization settings (Paramètres de l'organisation) › Cowork</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Réglage</th><th>Par défaut</th><th>Recommandation</th><th>Pourquoi</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Enable for your organization</strong> (Activer pour votre organisation)</td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--ok">Activé</span></td><td>Interrupteur général de Cowork.</td></tr>
+            <tr><td><strong>Sessions cloud</strong></td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--ok">Activé</span></td><td>Nécessaire pour les tâches planifiées et pour suivre une tâche depuis le web ou le mobile.</td></tr>
+            <tr><td><strong>Navigateur intégré</strong></td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--warn">Désactivé pendant le pilote</span></td><td>La navigation autonome sur le web expose à des contenus piégés (injection d'instructions). À ouvrir quand l'équipe maîtrise les bases.</td></tr>
+            <tr><td><strong>Allow "Automatically approve" mode</strong> (Autoriser le mode « Approuver automatiquement »)</td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--ok">Activé</span></td><td>Le guide collaborateurs impose le mode manuel au début, puis autorise le mode automatique, qui garde des contrôles de sécurité.</td></tr>
+            <tr><td><strong>Allow "Always allow" for connector tools</strong> (Autoriser « Toujours autoriser » pour les outils des connecteurs)</td><td><span class="pill pill--neutral">Désactivé</span></td><td><span class="pill pill--stop">Laisser désactivé</span></td><td>Oblige une approbation à chaque tâche pour les actions des connecteurs, comme la lecture des mails.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Skills et création de fichiers</h3>
+      <p><span class="path">Organization settings (Paramètres de l'organisation) › Plugins &amp; skills (Extensions et compétences) › Policy (Règles)</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Réglage</th><th>Recommandation</th><th>Pourquoi</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cloud code execution and file creation</strong> (Exécution de code et création de fichiers)</td><td><span class="pill pill--ok">Activé</span></td><td>Indispensable : sans lui, pas de fichiers Word, Excel ou PowerPoint, et pas de skills.</td></tr>
+            <tr><td><strong>Skills</strong> (Compétences)</td><td><span class="pill pill--ok">Activé</span></td><td>Nécessaire aux skills et aux plugins.</td></tr>
+            <tr><td><strong>User-created skills</strong> (Skills créées par les utilisateurs)</td><td><span class="pill pill--ok">Activé</span></td><td>Le guide collaborateurs fait créer une skill en exercice.</td></tr>
+            <tr><td><strong>Publishing</strong> (Publication)</td><td><span class="pill pill--warn">Requires review</span></td><td>Par défaut en Team : <em>Open</em> (Ouvert), et toute skill soumise est publiée pour tous sans contrôle. Avec <em>Requires review</em> (Validation requise), un Owner valide d'abord.</td></tr>
+            <tr><td><strong>Skill sharing</strong> (Partage de skills)</td><td><span class="pill pill--ok">Activé</span></td><td>Permet à un collaborateur de partager une skill avec un collègue précis, sans la publier pour tout le cabinet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Mémoire</h3>
+      <p><span class="path">Organization settings (Paramètres de l'organisation) › Capabilities (Fonctionnalités)</span></p>
+      <p>La mémoire permet à Claude de se souvenir des échanges précédents d'un collaborateur. En Team, ce sont les Owners qui la rendent disponible, puis chaque membre l'active lui-même. <strong>Recommandation : la rendre disponible.</strong> Le guide collaborateurs explique comment la couper pour une tâche ponctuelle.</p>
+      <aside class="note note--stop">
+        <p class="note-label">Attention, irréversible</p>
+        <p>Désactiver la mémoire au niveau de l'organisation <strong>supprime immédiatement et définitivement</strong> les mémoires de tous les membres.</p>
+      </aside>
+
+      <ul class="tasks" data-group="a4">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a4-cowork"><span>Régler la page Cowork selon le tableau <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a4-policy"><span>Régler la page Policy (exécution de code, skills, publication avec validation) <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a4-memoire"><span>Rendre la mémoire disponible <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a4-note"><span>Noter les réglages choisis et leur date dans un document interne <span class="who">Owner</span><small>Utile pour l'audit, et pour savoir quoi rouvrir après le pilote.</small></span></label></li>
+      </ul>
+    </section>
+
+    <!-- ============ A5 ============ -->
+    <section class="module" id="a5">
+      <div class="mod-head">
+        <span class="folio">05</span>
+        <span class="mod-meta">30 min · Owner + administrateur Microsoft</span>
+        <h2>Les connecteurs Microsoft 365 et Pennylane</h2>
+      </div>
+
+      <p>Le connecteur donne accès à Outlook, OneDrive, SharePoint et Teams. Tous les accès sont <strong>délégués</strong> : Claude agit au nom du collaborateur et ne voit ou ne modifie que ce que ce collaborateur peut déjà voir ou modifier. Les documents restent dans votre environnement Microsoft.</p>
+
+      <h3>Prérequis</h3>
+      <ul>
+        <li>Des comptes Microsoft 365 professionnels rattachés à un tenant Microsoft Entra (les comptes personnels Outlook.com ou Hotmail ne fonctionnent pas).</li>
+        <li>Un <strong>Global Administrator</strong> Entra pour le consentement unique.</li>
+        <li>Le rôle <strong>Owner</strong> ou <strong>Primary Owner</strong> dans Claude.</li>
+      </ul>
+
+      <h3>Ajouter le connecteur pour le cabinet</h3>
+      <ol class="steps">
+        <li><strong>Ouvrez <span class="path">Organization settings (Paramètres de l'organisation) › Connectors (Connecteurs)</span></strong> sur claude.ai.</li>
+        <li><strong>Cliquez sur <em>Add</em> (Ajouter), puis <em>All available</em> (Tous les disponibles)</strong>. Trouvez <strong>Microsoft 365</strong> et choisissez <em>Add to your team</em> (Ajouter à votre équipe).</li>
+        <li><strong>Connectez votre compte et accordez les autorisations</strong> pour toute l'organisation. Si vous n'êtes pas Global Administrator Entra, faites-vous accompagner de celui qui l'est.</li>
+        <li><strong>Ajustez les accès</strong><p>Vous pouvez limiter les utilisateurs autorisés ou retirer certaines autorisations.</p></li>
+      </ol>
+
+      <h3>Lecture seule ou actions ?</h3>
+      <p>Les outils de lecture et de recherche fonctionnent toujours. Les actions (envoyer un mail, gérer des brouillons, modifier l'agenda, créer des fichiers SharePoint, envoyer des messages Teams) ne fonctionnent que si vous les activez.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Service</th><th>Lecture</th><th>Actions possibles si activées</th><th>Recommandation</th></tr></thead>
+          <tbody>
+            <tr><td>SharePoint, OneDrive</td><td>Recherche et analyse de documents</td><td>Créer et modifier des fichiers</td><td rowspan="4"><span class="pill pill--warn">Lecture seule au lancement</span><br><br>Le guide collaborateurs pose la règle : Claude prépare, le collaborateur envoie. Activez les actions plus tard, au cas par cas.</td></tr>
+            <tr><td>Outlook</td><td>Fils de mails, archives</td><td>Envoyer des mails, gérer brouillons, règles, réponses automatiques, agenda</td></tr>
+            <tr><td>Teams (agenda)</td><td>Réunions, résumés, présences</td><td>Aucune</td></tr>
+            <tr><td>Teams (conversations)</td><td>Canaux et conversations</td><td>Envoyer des messages</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Les actions se règlent à deux endroits : les autorisations de l'application dans Microsoft Entra, et la configuration du connecteur dans <span class="path">Organization settings (Paramètres de l'organisation) › Connectors (Connecteurs)</span> (section <em>Tool permission restrictions</em> (Restrictions d'autorisation des outils), outil par outil).</p>
+
+      <details>
+        <summary>Erreur d'autorisation après une mise à jour du connecteur</summary>
+        <p>Quand Anthropic ajoute une autorisation au connecteur après votre consentement initial, la fonction concernée échoue tant qu'un administrateur Entra ne l'a pas approuvée. Se déconnecter et se reconnecter ne suffit pas. Le Global Administrator (ou Application Administrator) ouvre ce lien, en remplaçant <code>YOUR_TENANT_ID</code> par l'identifiant du tenant (visible dans <span class="path">Entra admin center › Overview (Vue d'ensemble)</span>) :</p>
+        <div class="prompt shell">
+          <div class="prompt-head"><span>Lien de consentement administrateur</span><button class="copy" type="button">Copier</button></div>
+          <pre>https://login.microsoftonline.com/YOUR_TENANT_ID/adminconsent?client_id=07c030f6-5743-41b7-ba00-0a6e85f37c17</pre>
+        </div>
+        <p>Il accepte la liste. L'approbation a réussi si l'adresse de la page de retour contient <code>admin_consent=True</code>. Dans Entra, l'application apparaît sous <span class="path">Enterprise applications (Applications d'entreprise)</span> avec le nom <em>M365 MCP Server for Claude</em>. Vérifiez que l'identifiant de l'application affiché sur sa page <em>Overview</em> (Vue d'ensemble) est bien celui du lien.</p>
+      </details>
+
+      <h3>Le connecteur Pennylane</h3>
+      <p>Pennylane a ouvert en août 2026 un serveur MCP officiel, c'est-à-dire un connecteur pour les assistants IA. Il est inclus pour les cabinets d'expertise comptable et les entreprises à partir de l'offre Essentiel, sans surcoût.</p>
+      <aside class="note note--key">
+        <p class="note-label">Pas encore dans le répertoire</p>
+        <p>Pennylane ne figure pas dans le répertoire des connecteurs de Claude, contrairement à Microsoft 365. On l'ajoute comme <strong>connecteur personnalisé</strong>, à partir de l'adresse de son serveur MCP. Sur l'offre Team, seuls les <strong>Owners</strong> et le <strong>Primary Owner</strong> peuvent le faire. Une fois ajouté, il apparaît dans la liste de chaque collaborateur, qui s'y connecte avec son propre compte Pennylane.</p>
+      </aside>
+      <ul>
+        <li><strong>Lecture seule</strong> pour l'instant : Claude consulte factures, transactions et déclarations de TVA, mais ne saisit et ne modifie rien. L'accès en écriture est annoncé comme en développement.</li>
+        <li><strong>Droits identiques à ceux du collaborateur</strong> : ce qu'il voit dans Pennylane, Claude le voit, et rien de plus.</li>
+        <li><strong>Connexion OAuth</strong> : chaque collaborateur se connecte avec ses propres identifiants Pennylane. Aucune clé ni jeton à distribuer.</li>
+      </ul>
+      <ol class="steps">
+        <li><strong>Ouvrez <span class="path">Organization settings (Paramètres de l'organisation) › Connectors (Connecteurs)</span></strong> sur claude.ai.</li>
+        <li><strong>Cliquez sur <em>Add</em> (Ajouter), survolez <em>Custom</em> (Personnalisé), puis choisissez <em>Web</em></strong><p>C'est l'entrée des connecteurs personnalisés à distance (MCP).</p></li>
+        <li><strong>Renseignez le nom et l'adresse</strong><p>Nom : <code>Pennylane</code> (c'est le nom que verront les collaborateurs). URL : l'adresse ci-dessous. Puis <em>Continue</em> (Continuer).</p></li>
+        <li><strong>Vérifiez l'authentification détectée</strong>, puis <em>Continue</em> (Continuer).<p>Pennylane utilise une connexion OAuth : chaque utilisateur se connecte avec ses identifiants Pennylane.</p></li>
+        <li><strong>Choisissez une connexion individuelle</strong><p>Dans <em>Authentication</em> (Authentification), choisissez l'option où <strong>chaque personne se connecte elle-même</strong> (<em>Sign in when needed</em> / Connexion au besoin). Ainsi, Claude n'accède qu'aux dossiers que chaque collaborateur voit déjà dans Pennylane. N'utilisez jamais une connexion partagée avec un compte administrateur.</p></li>
+        <li><strong>Testez avec votre propre compte</strong><p><span class="path">Customize (Personnaliser) › Connectors (Connecteurs) › Pennylane › Connect (Connecter)</span>, puis connexion Pennylane, choix du cabinet et autorisation.</p></li>
+        <li><strong>Ouvrez-le au groupe pilote</strong>, puis à tous après le bilan.</li>
+      </ol>
+      <div class="prompt shell">
+        <div class="prompt-head"><span>URL du serveur MCP Pennylane</span><button class="copy" type="button">Copier</button></div>
+        <pre>https://mcp.pennylane.com/mcp</pre>
+      </div>
+      <aside class="note note--warn">
+        <p class="note-label">C'est le connecteur le plus sensible</p>
+        <p>Il donne accès aux données comptables réelles de tous les dossiers que chaque collaborateur peut ouvrir. Avant de l'activer, vérifiez que la charte couvre explicitement ce cas (« avec précaution » : un dossier à la fois, pas de copie inutile) et que la question de l'information des clients est tranchée (module 1). Pennylane rappelle qu'il revient au cabinet de vérifier la conformité du fournisseur d'IA (RGPD, hébergement, conservation).</p>
+      </aside>
+      <p>Alternative sans connecteur : les collaborateurs exportent un fichier de Pennylane (grand livre, balance, FEC) et le font analyser dans Cowork. C'est l'exercice 11 du guide collaborateurs.</p>
+
+      <h3>Les autres connecteurs</h3>
+      <p>Le répertoire propose de nombreux autres connecteurs. Règle simple : <strong>n'ajouter un connecteur que pour un besoin identifié</strong>, privilégier ceux du répertoire officiel, commencer en lecture seule, et tester d'abord avec le groupe pilote.</p>
+
+      <ul class="tasks" data-group="a5">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a5-add"><span>Ajouter Microsoft 365 et donner le consentement Entra <span class="who">Owner + Global Admin</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a5-write"><span>Laisser les actions désactivées pour le lancement <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a5-test"><span>Tester avec un compte pilote : « Résume mes mails d'hier » <span class="who">Référent</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a5-penny-decision"><span>Décider d'activer ou non le connecteur Pennylane, et à quel moment <span class="who">Direction</span><small>Recommandation : après le pilote, une fois la charte validée sur ce point.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a5-penny"><span>Ajouter le connecteur Pennylane et le tester sur un dossier interne <span class="who">Owner + référent</span></span></label></li>
+      </ul>
+    </section>
+
+    <!-- ============ A6 ============ -->
+    <section class="module" id="a6">
+      <div class="mod-head">
+        <span class="folio">06</span>
+        <span class="mod-meta">2 à 3 h · référent IA + Owner</span>
+        <h2>Les skills du cabinet</h2>
+      </div>
+
+      <p>Les skills sont le meilleur levier pour que Claude travaille <strong>à la manière du cabinet</strong> : formats de courriers, ton, procédures. Une skill publiée par un Owner est disponible et activée pour tous les collaborateurs, dans le chat comme dans Cowork.</p>
+
+      <h3>Les premières skills à créer</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill</th><th>Ce qu'elle apprend à Claude</th><th>Priorité</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Charte rédactionnelle du cabinet</strong></td><td>Ton, formules d'appel et de politesse, signature, mentions obligatoires, mise en page des courriers.</td><td><span class="pill pill--ok">Lancement</span></td></tr>
+            <tr><td><strong>Relance de pièces</strong></td><td>Structure d'une relance, délais, ton. C'est aussi l'exercice 14 du guide collaborateurs.</td><td><span class="pill pill--ok">Lancement</span></td></tr>
+            <tr><td><strong>Récapitulatif des factures fournisseurs</strong></td><td>Extraction des factures PDF vers le tableau Excel du cabinet, avec contrôle des montants et des taux de TVA. L'exemple technique ci-dessous.</td><td><span class="pill pill--warn">Mois 1</span></td></tr>
+            <tr><td><strong>Compte rendu de rendez-vous</strong></td><td>Le format maison : participants, décisions, actions, échéances.</td><td><span class="pill pill--warn">Mois 1</span></td></tr>
+            <tr><td><strong>Envoi des comptes annuels</strong></td><td>Le mail type et la liste des documents joints.</td><td><span class="pill pill--warn">Mois 1</span></td></tr>
+            <tr><td><strong>Checklist de révision</strong></td><td>Les contrôles par cycle (achats, ventes, trésorerie, social) selon votre méthode.</td><td><span class="pill pill--neutral">Mois 2</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Créer une skill avec Claude</h3>
+      <ol class="steps">
+        <li><strong>Rassemblez la matière</strong><p>Un ou deux exemples réels (anonymisés) de ce que vous voulez obtenir, et les règles à respecter.</p></li>
+        <li><strong>Demandez à Claude de construire la skill</strong><p>Dans Cowork, avec le texte ci-dessous. Claude pose des questions puis produit la skill, sous forme de dossier ou de fichier .zip.</p></li>
+        <li><strong>Testez-la</strong> sur trois ou quatre cas variés, et faites-la corriger jusqu'à ce que le résultat soit fiable.</li>
+        <li><strong>Publiez-la pour le cabinet</strong><p><span class="path">Organization settings (Paramètres de l'organisation) › Plugins &amp; skills (Extensions et compétences)</span>, bouton <em>Add</em> (en haut à droite), puis <em>Upload a skill</em> (le .zip doit contenir un fichier <code>SKILL.md</code>) ou <em>Create a skill</em> (Créer une skill).</p></li>
+        <li><strong>Annoncez-la</strong> aux collaborateurs, avec un exemple de demande qui la déclenche.</li>
+      </ol>
+      <div class="prompt">
+        <div class="prompt-head"><span>À copier dans Cowork</span><button class="copy" type="button">Copier</button></div>
+        <pre>Aide-moi à créer une skill « charte-redactionnelle-cabinet » qui sera utilisée par tous les collaborateurs du cabinet chaque fois qu'ils rédigent un courrier ou un mail destiné à un client.
+
+Voici nos règles : [ton, formules d'appel, formules de politesse, signature, mentions obligatoires, mots à éviter].
+Voici deux exemples de courriers que nous considérons comme réussis : [coller les exemples anonymisés].
+
+Pose-moi toutes les questions nécessaires. Ensuite, rédige la skill, propose-moi trois demandes de test, et prépare un fichier .zip prêt à être importé dans les paramètres de l'organisation.</pre>
+      </div>
+
+      <h3>Anatomie technique d'une skill</h3>
+      <p>Côté technique, une skill est simplement <strong>un dossier</strong> qui contient un fichier <code>SKILL.md</code> (du texte mis en forme), et éventuellement des fichiers d'appui : modèles, listes de référence. C'est ce dossier, compressé en .zip, que l'on importe dans les paramètres de l'organisation.</p>
+
+  <div class="filetree"><b>recap-factures-fournisseurs/</b>
+├── <b>SKILL.md</b>                       <i>← obligatoire : nom, description, instructions</i>
+├── modeles/
+│   └── recap-factures-modele.xlsx     <i>← facultatif : le tableau type du cabinet</i>
+└── reference/
+    ├── taux-tva.md                    <i>← facultatif : taux métropole et DOM</i>
+    └── comptes-charges-courants.md    <i>← facultatif : correspondances fournisseur → compte</i></div>
+
+  <p>Les fichiers d'appui ne sont lus que lorsque la skill en a besoin : on peut y mettre des listes longues (taux, plan de comptes du cabinet) sans alourdir chaque tâche.</p>
+
+  <div class="prompt shell">
+    <div class="prompt-head"><span>Exemple de SKILL.md</span><button class="copy" type="button">Copier</button></div>
+    <pre>---
+name: recap-factures-fournisseurs
+description: Transforme des factures fournisseurs (PDF ou images) en tableau récapitulatif Excel au format du cabinet, avec contrôle des montants et des taux de TVA. À utiliser dès qu'on demande d'extraire, de lister, de récapituler ou de préparer la saisie de factures d'achat. Ne pas utiliser pour les factures de vente ni pour les relevés bancaires.
+---
+
+# Récapitulatif des factures fournisseurs
+
+## Tableau à produire
+- Partir du modèle modeles/recap-factures-modele.xlsx.
+- Une ligne par facture : fournisseur, n° de facture, date (JJ/MM/AAAA), HT, TVA, TTC, taux de TVA, compte de charge proposé (PCG), contrôle.
+- Ligne de total avec formules. Montants au format 1 234,56.
+
+## Contrôles obligatoires
+- Colonne « Contrôle » : OK si HT + TVA = TTC à 0,01 € près, sinon ÉCART.
+- Taux de TVA : vérifier qu'il correspond au lieu de l'entreprise (voir reference/taux-tva.md). Signaler tout taux inattendu.
+- Doublons : même fournisseur, même numéro ou même montant à la même date.
+- Lister toutes les anomalies dans un onglet « Anomalies », avec le nom du fichier source.
+
+## Compte de charge
+- Proposer le compte à partir de reference/comptes-charges-courants.md.
+- Indiquer « à confirmer » quand la nature de la dépense n'est pas évidente.
+
+## À éviter
+- Ne jamais deviner une valeur illisible : laisser la case vide et l'inscrire dans « Anomalies ».
+- Ne jamais modifier, renommer ni déplacer les fichiers d'origine.
+- Ne jamais arrondir un montant.
+
+## Exemple de ligne réussie
+Minoterie des Hauts | MH-2026-0112 | 08/01/2026 | 640,00 | 13,44 | 653,44 | 2,1 % | 601100 | OK</pre>
+  </div>
+
+  <h4>Les conventions à respecter</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Élément</th><th>Règle</th><th>Pourquoi</th></tr></thead>
+      <tbody>
+        <tr><td><strong>name</strong></td><td>Minuscules, chiffres et tirets, 64 caractères maximum</td><td>C'est l'identifiant de la skill</td></tr>
+        <tr><td><strong>description</strong></td><td>Quoi + quand + quand ne pas l'utiliser, 1 024 caractères maximum</td><td>Claude ne lit qu'elle pour décider</td></tr>
+        <tr><td><strong>Corps</strong></td><td>Court et structuré : règles, à éviter, exemple</td><td>Lu en entier à chaque déclenchement</td></tr>
+        <tr><td><strong>Fichiers d'appui</strong></td><td>Référencés depuis le corps, jamais de données clients réelles</td><td>Chargés seulement quand c'est utile</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Le cycle de vie d'une skill du cabinet</h4>
+  <div class="lifecycle">
+    <div><span class="n">01</span><b>Besoin</b>Remonté par un collaborateur ou le canal Teams</div>
+    <div><span class="n">02</span><b>Brouillon</b>Construit avec Claude par le référent</div>
+    <div><span class="n">03</span><b>Test</b>3 à 5 cas, dont un négatif, par le groupe pilote</div>
+    <div><span class="n">04</span><b>Relecture</b>Validée par un associé</div>
+    <div><span class="n">05</span><b>Publication</b>Organization settings, annonce à l'équipe</div>
+    <div><span class="n">06</span><b>Amélioration</b>Retours, puis version suivante</div>
+  </div>
+
+  <h4>Avant de publier une skill pour tout le cabinet</h4>
+  <ul class="checklist">
+    <li>aucune donnée client réelle dans les exemples ni les fichiers d'appui ;</li>
+    <li>les règles sont conformes à la charte d'usage ;</li>
+    <li>la description dit quoi, quand, et quand ne pas l'utiliser ;</li>
+    <li>testée sur au moins un cas qui ne doit pas la déclencher ;</li>
+    <li>un responsable est désigné pour la tenir à jour ;</li>
+    <li>la date et la version sont notées dans le registre des skills du cabinet.</li>
+  </ul>
+
+      <h3>Gérer les skills proposées par les collaborateurs</h3>
+      <p>Avec la publication réglée sur <em>Requires review</em> (module 4), les skills soumises arrivent dans l'onglet <span class="path">Requests (Demandes)</span>. Vous y voyez le contenu et l'ensemble des fichiers, puis vous approuvez ou demandez des modifications. L'onglet <span class="path">Inventory (Inventaire)</span> liste toutes les skills, avec leur historique de versions et leur usage sur 30 jours. Le menu de chaque ligne permet d'en changer l'accès par défaut ou de la retirer.</p>
+
+      <aside class="note note--key">
+        <p class="note-label">Bonne pratique</p>
+        <p>Avant de publier une skill pour tous, relisez-la entièrement. Une skill est une consigne que Claude suivra pour tout le cabinet : une erreur dedans se répète dans chaque document.</p>
+      </aside>
+
+      <ul class="tasks" data-group="a6">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a6-charte"><span>Créer et publier la skill « charte rédactionnelle » <span class="who">Référent + Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a6-relance"><span>Créer et publier la skill « relance de pièces » <span class="who">Référent + Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a6-test"><span>Faire tester les deux skills par le groupe pilote <span class="who">Référent</span></span></label></li>
+      </ul>
+    </section>
+
+    <!-- ============ A7 ============ -->
+    <section class="module" id="a7">
+      <div class="mod-head">
+        <span class="folio">07</span>
+        <span class="mod-meta">30 min · Owner</span>
+        <h2>Les plugins</h2>
+      </div>
+
+      <p>Un plugin regroupe des skills, des connecteurs et des commandes pour un métier. Le catalogue d'Anthropic (<em>Knowledge Work</em>) est pré-installé dans votre organisation. Votre travail consiste surtout à <strong>choisir ce que les collaborateurs voient</strong>, pour éviter qu'ils se perdent dans des plugins sans rapport avec leur métier.</p>
+
+      <h3>Les quatre niveaux d'accès</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Niveau</th><th>Ce que voit le collaborateur</th><th>Usage au cabinet</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Installed by default</strong> (Installé par défaut)</td><td>Installé d'office, il peut le désactiver.</td><td>Le plugin Finance, si le pilote est concluant.</td></tr>
+            <tr><td><strong>Available to install</strong> (Disponible à l'installation)</td><td>Visible dans l'onglet Discover, il l'ajoute s'il veut.</td><td>Plugins utiles à certains seulement (opérations, analyse de données).</td></tr>
+            <tr><td><strong>Not available</strong> (Indisponible)</td><td>Invisible.</td><td>Tout ce qui n'a pas de rapport avec le cabinet (développement, design, ventes…).</td></tr>
+            <tr><td><strong>Required</strong> (Obligatoire)</td><td>Installé d'office, impossible à retirer.</td><td>Un futur plugin « cabinet » regroupant vos skills maison.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Régler l'accès à un plugin</h3>
+      <ol class="steps">
+        <li><strong>Ouvrez <span class="path">Organization settings (Paramètres de l'organisation) › Plugins &amp; skills (Extensions et compétences)</span>, onglet <em>Inventory</em> (Inventaire)</strong>.</li>
+        <li><strong>Trouvez le plugin</strong>, ouvrez le menu en bout de ligne, puis <em>Default access</em> (Accès par défaut).</li>
+        <li><strong>Choisissez le niveau.</strong> Le changement s'applique à la prochaine session des membres.</li>
+      </ol>
+
+      <h3>Plus tard : un plugin propre au cabinet</h3>
+      <p>Quand vous aurez plusieurs skills maison, regroupez-les dans un plugin « Cabinet ». Les collaborateurs ont alors tout au même endroit, et vous mettez à jour l'ensemble d'un coup. Vous pouvez le faire construire par Claude, puis l'importer dans <span class="path">Plugins &amp; skills (Extensions et compétences) › Marketplaces (Catalogues)</span>, <em>Add</em> (Ajouter), <em>Upload a plugin</em> (fichier .zip). Importer un plugin qui porte le même nom remplace la version précédente.</p>
+
+      <ul class="tasks" data-group="a7">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a7-tri"><span>Passer en « Not available » les plugins sans rapport avec le cabinet <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a7-finance"><span>Mettre le plugin Finance en « Available to install » pour le pilote <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a7-bilan"><span>Après le pilote, décider de l'installer par défaut ou non <span class="who">Owner + référent</span></span></label></li>
+      </ul>
+    </section>
+
+    <!-- ============ A8 ============ -->
+    <section class="module" id="a8">
+      <div class="mod-head">
+        <span class="folio">08</span>
+        <span class="mod-meta">Semaines 3 à 5</span>
+        <h2>Pilote et lancement</h2>
+      </div>
+
+      <h3>Le pilote : deux semaines, trois à cinq personnes</h3>
+      <p>Le pilote sert à repérer ce qui coince avant que toute l'équipe ne le découvre : une installation qui échoue, un réglage trop strict, une consigne pas claire dans le guide.</p>
+      <ol class="steps">
+        <li><strong>Réunion de lancement de 30 minutes</strong><p>Pourquoi on le fait, la charte, le guide, comment remonter les problèmes.</p></li>
+        <li><strong>Les pilotes suivent le parcours essentiel du guide collaborateurs</strong> (modules 0 à 8, environ 3 h 35) pendant les deux semaines du pilote.</li>
+        <li><strong>Point hebdomadaire de 20 minutes</strong><p>Ce qui marche, ce qui bloque, les idées d'usage. Le référent note tout.</p></li>
+        <li><strong>Bilan</strong><p>Ajustez les réglages, le guide, la charte. Décidez des skills et plugins à généraliser.</p></li>
+      </ol>
+
+      <h3>Le lancement</h3>
+      <ul class="tasks" data-group="a8">
+        <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a8-kit"><span>Mettre le dossier d'entraînement à disposition <span class="who">Référent</span><small>Il se télécharge depuis le module 5 du guide collaborateurs. Gardez aussi le fichier .zip sur SharePoint, en secours. Le corrigé formateur reste réservé au référent.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-arbo"><span>Décider d'une arborescence commune pour les dossiers Cowork des collaborateurs <span class="who">Référent + direction</span><small>Par exemple celle des modules 4 et 9 du guide collaborateurs : <code>Documents\Claude_Cabinet</code> avec <code>Modeles</code>, <code>Entrainement</code> et <code>Travaux</code> (un dossier par tâche ou par client, chacun avec <code>01_Entrees</code> et <code>02_Sorties</code>). Une structure identique facilite l'entraide, le support et l'écriture de skills qui citent des noms de dossiers.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-kickoff"><span>Faire la réunion de lancement du pilote <span class="who">Référent</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-bilan"><span>Faire le bilan du pilote et ajuster <span class="who">Direction + référent</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-deploy"><span>Installer l'application sur tous les postes <span class="who">Informatique</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-partage"><span>Partager le guide collaborateurs avec toute l'équipe <span class="who">Owner</span><small>Depuis le menu de partage de la page du guide.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-invite"><span>Inviter tous les collaborateurs <span class="who">Admin</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-annonce"><span>Envoyer le mail d'annonce <span class="who">Direction</span><small>Modèle en <a href="#modeles">annexe A</a>.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-canal"><span>Créer un canal Teams « IA au cabinet » pour les questions et les astuces <span class="who">Référent</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a8-permanence"><span>Planifier une permanence hebdomadaire de 30 minutes pendant le premier mois <span class="who">Référent</span></span></label></li>
+      </ul>
+
+      <aside class="note note--calm">
+        <p class="note-label">Ce qui fait la différence</p>
+        <p>Les équipes qui adoptent l'IA ne sont pas celles qui ont eu la meilleure formation, mais celles où quelqu'un montre régulièrement un usage concret et où on a le droit de dire « ça n'a pas marché ». Faites partager une réussite par semaine dans le canal Teams, et valorisez aussi les échecs instructifs.</p>
+      </aside>
+    </section>
+
+    <!-- ============ A9 ============ -->
+    <section class="module" id="a9">
+      <div class="mod-head">
+        <span class="folio">09</span>
+        <span class="mod-meta">1 h par mois</span>
+        <h2>Suivi et maintenance</h2>
+      </div>
+
+      <h3>La revue mensuelle</h3>
+      <ul class="tasks" data-group="a9">
+        <li class="tasks-head"><span>Chaque mois</span><span class="tasks-count"></span></li>
+        <li><label><input type="checkbox" id="t-a9-membres"><span>Revoir les membres et les sièges <span class="who">Admin</span><small>Retirer les départs, ajuster Standard ou Premium selon l'usage. Export possible via <em>Export CSV</em> (Exporter en CSV) dans Members.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a9-requests"><span>Traiter les demandes de skills et de plugins (onglet Requests) <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a9-usage"><span>Regarder l'usage : qui utilise, quelles skills servent (onglet Inventory, usage sur 30 jours) <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a9-nouveautes"><span>Lire les notes de version d'Anthropic et mettre à jour le guide collaborateurs si l'interface a changé <span class="who">Référent</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a9-ouvrir"><span>Décider s'il faut ouvrir un réglage resté fermé (navigateur intégré, actions Microsoft 365) <span class="who">Owner + direction</span></span></label></li>
+      </ul>
+
+      <h3>Départ d'un collaborateur</h3>
+      <ol class="steps">
+        <li><strong>Retirez-le de l'organisation</strong><p><span class="path">Organization settings (Paramètres de l'organisation) › Members (Membres)</span>, menu de la ligne, <em>Remove from team</em> (Retirer de l'équipe). L'accès est coupé immédiatement et le siège est libéré.</p></li>
+        <li><strong>Coupez l'accès Microsoft 365</strong> comme d'habitude : le connecteur ne fonctionne plus sans compte actif.</li>
+        <li><strong>Traitez le poste</strong><p>L'historique des sessions Cowork locales reste sur l'ordinateur et ne peut pas être supprimé à distance. Réinitialisez le poste ou supprimez le profil utilisateur avant de le réattribuer.</p></li>
+        <li><strong>Récupérez ses skills ou projets partagés</strong> utiles à l'équipe, si besoin.</li>
+      </ol>
+
+      <h3>Mesurer l'intérêt</h3>
+      <p>Pas besoin d'un tableau de bord complexe. Trois indicateurs suffisent, à relever chaque trimestre :</p>
+      <ul>
+        <li><strong>L'adoption</strong> : combien de collaborateurs l'utilisent chaque semaine.</li>
+        <li><strong>Le temps gagné</strong> : un court sondage (« combien de temps Cowork vous a-t-il fait gagner cette semaine ? »).</li>
+        <li><strong>La capitalisation</strong> : le nombre de skills maison publiées et utilisées.</li>
+      </ul>
+
+      <details>
+        <summary>Pour un service informatique outillé : la journalisation</summary>
+        <p>Les Owners Team peuvent envoyer les événements Cowork (appels d'outils, accès aux fichiers, décisions d'approbation) vers un outil de supervision compatible OpenTelemetry. C'est utile si le cabinet dispose déjà d'un SIEM. L'offre Team ne permet pas de lire le contenu des conversations des collaborateurs.</p>
+      </details>
+    </section>
+
+    <!-- ============ ANNEXE A ============ -->
+    <section class="module" id="modeles">
+      <div class="mod-head">
+        <span class="folio">A</span>
+        <span class="mod-meta">Annexe · à adapter</span>
+        <h2>Modèles à copier</h2>
+      </div>
+
+      <h3 style="margin-top:0">Charte d'usage de l'IA au cabinet</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span>Charte d'usage · à valider par la direction</span><button class="copy" type="button">Copier</button></div>
+        <pre>CHARTE D'USAGE DE L'INTELLIGENCE ARTIFICIELLE – [NOM DU CABINET]
+Version 1 – [date]
+
+1. Objet
+Cette charte encadre l'utilisation de Claude (offre Team d'Anthropic) par les collaborateurs du cabinet. Elle complète les obligations de secret professionnel et la politique de protection des données du cabinet.
+
+2. Outil autorisé
+Seul l'espace Claude du cabinet, accessible avec l'adresse e-mail professionnelle, est autorisé pour un usage professionnel. L'usage d'outils d'IA personnels ou gratuits pour des données du cabinet est interdit.
+
+3. Données
+Autorisé : documents internes non sensibles, modèles vierges, questions générales, sources publiques, dossier d'entraînement fictif.
+Avec précaution : documents clients anonymisés ou copiés dans un dossier de travail dédié ; consultation des mails via le connecteur Microsoft 365 et des données Pennylane via son connecteur, en lecture seule.
+Interdit : mots de passe et identifiants ; bulletins de paie nominatifs, données de santé, numéros de sécurité sociale ; données d'un client ayant refusé l'usage de l'IA.
+
+4. Règles d'usage
+- Connecter uniquement un dossier de travail dédié, jamais un disque ou un lecteur réseau entier.
+- Travailler sur des copies des documents.
+- Vérifier systématiquement chiffres, dates, taux et références juridiques à la source.
+- Ne jamais transmettre à un client un document produit avec l'IA sans relecture.
+- Ne jamais laisser l'IA envoyer un message à un client.
+
+5. Responsabilité
+Le collaborateur reste responsable des documents et actions réalisés avec l'IA. Les travaux restent soumis aux procédures de revue habituelles du cabinet.
+
+6. Incidents
+Tout comportement anormal de l'outil, ou toute erreur de manipulation de données, est signalé sans délai au référent IA : [nom, contact].
+
+7. Évolution
+Cette charte est revue au moins une fois par an.
+
+Lu et approuvé, le [date] – Nom et signature du collaborateur :</pre>
+      </div>
+
+      <h3>Clause pour les lettres de mission</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span>Clause · à faire valider juridiquement</span><button class="copy" type="button">Copier</button></div>
+        <pre>Recours à des outils d'intelligence artificielle
+Le cabinet peut recourir à des outils d'intelligence artificielle, dans un cadre contractuel sécurisé, pour l'assistance à la rédaction et au traitement de documents. Ces outils sont utilisés sous le contrôle et la responsabilité des collaborateurs du cabinet, dans le respect du secret professionnel et de la réglementation sur la protection des données. Les données confiées ne sont pas utilisées par le fournisseur pour entraîner ses modèles. Le client peut s'opposer à cet usage pour son dossier en le notifiant par écrit au cabinet.</pre>
+      </div>
+
+      <h3>Mail d'annonce aux collaborateurs</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span>Mail d'annonce</span><button class="copy" type="button">Copier</button></div>
+        <pre>Objet : Claude Cowork arrive au cabinet – votre guide pour démarrer
+
+Bonjour à toutes et à tous,
+
+Après quelques semaines de test avec [noms des pilotes], nous mettons Claude Cowork à disposition de toute l'équipe à partir du [date].
+
+Claude est un assistant d'intelligence artificielle. Avec Cowork, il peut rédiger des courriers, créer des tableaux Excel, résumer des documents ou organiser des fichiers, sous votre contrôle. L'objectif est simple : vous libérer du temps sur les tâches répétitives.
+
+Pour démarrer :
+1. Acceptez l'invitation que vous allez recevoir de Claude, avec votre adresse professionnelle.
+2. Ouvrez le guide d'autoformation : [lien du guide]. Commencez par le parcours essentiel (modules 0 à 8, environ 3 h 35), à répartir sur deux semaines. Le parcours avancé (environ 1 h 45) viendra après quelques semaines de pratique et lors des ateliers en petit groupe.
+3. Lisez la charte d'usage, jointe à ce mail : elle précise les données que l'on peut confier ou non à l'IA.
+
+Vous ne réussirez pas tout du premier coup, et c'est normal. Personne ne vous jugera sur vos essais.
+
+[Nom du référent] est votre référent IA. Il tient une permanence chaque [jour] à [heure], et un canal Teams « IA au cabinet » est ouvert pour vos questions et vos astuces.
+
+Bonne découverte !
+[Signature]</pre>
+      </div>
+    </section>
+
+    <!-- ============ ANNEXE B ============ -->
+    <section class="module" id="depannage">
+      <div class="mod-head">
+        <span class="folio">B</span>
+        <span class="mod-meta">Annexe</span>
+        <h2>Dépannage</h2>
+      </div>
+      <details>
+        <summary>Un collaborateur ne voit pas l'option Cowork</summary>
+        <ul>
+          <li>Est-il connecté avec son compte professionnel, dans l'espace du cabinet ?</li>
+          <li>Cowork est-il activé dans <span class="path">Organization settings (Paramètres de l'organisation) › Cowork</span> ?</li>
+          <li>A-t-il installé l'application en utilisateur standard ? Dans ce cas Cowork n'est pas disponible : redéployez-la (module 3).</li>
+          <li>Virtual Machine Platform est-il activé, et le poste a-t-il été redémarré depuis ?</li>
+          <li>Travaille-t-il dans un bureau à distance ? Installez Claude sur le poste physique.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Claude ne crée pas de fichiers Word ou Excel, ou les skills ne marchent pas</summary>
+        <p>Vérifiez que <em>Cloud code execution and file creation</em> (Exécution de code et création de fichiers) et <em>Skills</em> (Compétences) sont activés dans <span class="path">Organization settings (Paramètres de l'organisation) › Plugins &amp; skills (Extensions et compétences) › Policy (Règles)</span>.</p>
+      </details>
+      <details>
+        <summary>Le connecteur Microsoft 365 renvoie une erreur d'autorisation</summary>
+        <p>Il s'agit probablement d'une autorisation ajoutée par Anthropic après votre consentement initial. Utilisez le lien de consentement administrateur du <a href="#a5">module 5</a>. Vérifiez aussi que la licence Microsoft 365 du collaborateur est active, et qu'il se connecte avec un compte professionnel.</p>
+      </details>
+      <details>
+        <summary>Claude ne trouve pas un document SharePoint</summary>
+        <p>Le collaborateur peut-il ouvrir ce document lui-même dans Microsoft 365 ? Le document est-il bien sur SharePoint ou OneDrive, et pas seulement sur son poste ? Un fichier tout juste déposé peut prendre un peu de temps à être indexé. Conseillez de citer le site SharePoint ou le nom exact du fichier.</p>
+      </details>
+      <details>
+        <summary>Un plugin ou une skill n'apparaît pas chez un collaborateur</summary>
+        <p>Vérifiez son niveau d'accès dans l'onglet <em>Inventory</em> (Inventaire). Les changements s'appliquent à la session suivante : demandez au collaborateur de fermer puis rouvrir l'application.</p>
+      </details>
+      <details>
+        <summary>Un collaborateur atteint souvent ses limites d'utilisation</summary>
+        <p>Rappelez-lui les bonnes pratiques (regrouper les demandes liées, une tâche par sujet). Si l'usage est justifié, passez son siège en Premium.</p>
+      </details>
+      <details>
+        <summary>Un collaborateur a confié par erreur des données interdites</summary>
+        <p>Appliquez la procédure d'incident de la charte : supprimer la tâche concernée (menu de la tâche, <em>Delete</em> (Supprimer)), documenter ce qui a été transmis, informer la direction et, si des données personnelles sont en jeu, le DPO, qui évaluera s'il s'agit d'une violation de données à notifier.</p>
+      </details>
+    </section>
+
+    <!-- ============ ANNEXE C ============ -->
+    <section class="module" id="liens" style="border-bottom:0">
+      <div class="mod-head">
+        <span class="folio">C</span>
+        <span class="mod-meta">Annexe · documentation Anthropic (en anglais)</span>
+        <h2>Liens officiels</h2>
+      </div>
+      <dl class="terms">
+        <div><dt><a href="https://support.claude.com/en/articles/13455879-use-claude-cowork-on-team-and-enterprise-plans" target="_blank" rel="noopener">Cowork sur les offres Team et Enterprise</a></dt><dd>Réglages administrateur et stockage des données.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" target="_blank" rel="noopener">Utiliser Cowork en sécurité</a></dt><dd>Les risques et les dix recommandations d'Anthropic.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/12622703-deploy-claude-desktop-for-windows" target="_blank" rel="noopener">Déployer Claude Desktop sur Windows</a></dt><dd>Paquets MSIX, prérequis, mises à jour.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/13133750-manage-members-on-team-and-enterprise-plans" target="_blank" rel="noopener">Gérer les membres</a></dt><dd>Invitations, liens, retraits.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/9267276-roles-and-permissions" target="_blank" rel="noopener">Rôles et permissions</a></dt><dd>Ce que peut faire chaque rôle.</dd></div>
+        <div><dt><a href="https://claude.com/docs/connectors/microsoft/365" target="_blank" rel="noopener">Connecteur Microsoft 365</a></dt><dd>Installation, autorisations, dépannage.</dd></div>
+        <div><dt><a href="https://help.pennylane.com/fr/articles/757740-connecter-votre-assistant-ia-au-mcp-pennylane" target="_blank" rel="noopener">Connecteur MCP Pennylane</a></dt><dd>Aide Pennylane, en français.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/12684923-microsoft-365-connector-security-guide" target="_blank" rel="noopener">Sécurité du connecteur Microsoft 365</a></dt><dd>Le modèle d'autorisations en détail.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization" target="_blank" rel="noopener">Gérer les skills de l'organisation</a></dt><dd>Publication, validation, partage.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization" target="_blank" rel="noopener">Gérer les plugins de l'organisation</a></dt><dd>Catalogues, niveaux d'accès, demandes.</dd></div>
+        <div><dt><a href="https://support.claude.com/en/articles/12138966-release-notes" target="_blank" rel="noopener">Notes de version</a></dt><dd>À consulter chaque mois.</dd></div>
+      </dl>
+      <p class="foot">Guide établi en octobre 2026 à partir de la documentation officielle d'Anthropic. Les réglages et leur emplacement évoluent : en cas de différence, la console d'administration fait foi.</p>
+      <div class="credit"><a class="brand" href="https://thejarvis.company/100xWorks/" target="_blank" rel="noopener" aria-label="100xWorks"><span class="mark" aria-hidden="true">✳</span>100x<span>works</span></a><span>Construisez avec l’IA. Gardez la maîtrise.</span></div>
+    </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var KEY = "cowork-admin-tasks";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { state = {}; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.tasks input[type="checkbox"]'));
+  boxes.forEach(function(b){ b.checked = !!state[b.id]; b.addEventListener("change", function(){ state[b.id] = b.checked; save(); render(); }); });
+
+  function render(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    document.getElementById("progressLabel").textContent = n + " / " + boxes.length + " actions";
+    document.getElementById("progressFill").style.width = (boxes.length ? n / boxes.length * 100 : 0) + "%";
+    document.querySelectorAll("ul.tasks").forEach(function(ul){
+      var bs = ul.querySelectorAll("input"), d = 0;
+      bs.forEach(function(b){ if(b.checked) d++; });
+      ul.querySelector(".tasks-count").textContent = d + " / " + bs.length;
+    });
+    document.querySelectorAll(".toc a").forEach(function(a){
+      var sec = document.getElementById(a.getAttribute("href").slice(1));
+      var c = a.querySelector(".count");
+      if(!sec || !c) return;
+      var bs = sec.querySelectorAll('.tasks input'), d = 0;
+      if(!bs.length){ c.textContent = ""; return; }
+      bs.forEach(function(b){ if(b.checked) d++; });
+      c.textContent = d + "/" + bs.length;
+      a.classList.toggle("complete", d === bs.length);
+    });
+  }
+  render();
+
+  var resetBtn = document.getElementById("resetBtn"), armed = false;
+  resetBtn.addEventListener("click", function(){
+    if(!armed){ armed = true; resetBtn.textContent = "Cliquez à nouveau pour confirmer"; setTimeout(function(){ armed = false; resetBtn.textContent = "Décocher toutes les actions"; }, 4000); return; }
+    state = {}; save(); boxes.forEach(function(b){ b.checked = false; }); render(); armed = false; resetBtn.textContent = "Actions décochées";
+  });
+
+  document.querySelectorAll(".prompt").forEach(function(box){
+    var btn = box.querySelector(".copy"), pre = box.querySelector("pre");
+    btn.addEventListener("click", function(){
+      function ok(){ btn.textContent = "Copié ✓"; btn.classList.add("copied"); setTimeout(function(){ btn.textContent = "Copier"; btn.classList.remove("copied"); }, 1800); }
+      function fallback(){ var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Ctrl+C pour copier"; }
+      try { navigator.clipboard.writeText(pre.textContent).then(ok, fallback); } catch(e) { fallback(); }
+    });
+  });
+
+  var toc = document.getElementById("toc"), menuBtn = document.getElementById("menuBtn");
+  menuBtn.addEventListener("click", function(){ var o = toc.classList.toggle("open"); menuBtn.setAttribute("aria-expanded", o ? "true" : "false"); menuBtn.textContent = o ? "Fermer" : "Sommaire"; });
+  toc.querySelectorAll("a").forEach(function(a){ a.addEventListener("click", function(){ if(toc.classList.contains("open")){ toc.classList.remove("open"); menuBtn.setAttribute("aria-expanded","false"); menuBtn.textContent = "Sommaire"; } }); });
+
+  var links = {};
+  toc.querySelectorAll("a").forEach(function(a){ links[a.getAttribute("href").slice(1)] = a; });
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          Object.keys(links).forEach(function(k){ links[k].classList.remove("active"); });
+          var l = links[e.target.id]; if(l) l.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    document.querySelectorAll("section.module").forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
+<script>
+(function(){
+  // ----- Thème : Auto / Clair / Sombre -----
+  var root = document.documentElement;
+  var hostTheme = root.getAttribute("data-theme");
+  var TKEY = "100xworks-theme";
+  var pref = "auto";
+  try { pref = localStorage.getItem(TKEY) || "auto"; } catch(e) {}
+  var btns = document.querySelectorAll("[data-theme-set]");
+  function applyTheme(p){
+    pref = p;
+    if(p === "auto"){ if(hostTheme) root.setAttribute("data-theme", hostTheme); else root.removeAttribute("data-theme"); }
+    else root.setAttribute("data-theme", p);
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.themeSet === p ? "true" : "false"); });
+    try { localStorage.setItem(TKEY, p); } catch(e) {}
+    drawPixels(true);
+  }
+  btns.forEach(function(b){ b.addEventListener("click", function(){ applyTheme(b.dataset.themeSet); }); });
+
+  // ----- Bande de pixels (clin d'œil à l'en-tête 100xWorks) -----
+  var canvas = document.getElementById("pixels");
+  var cells = [], cols = 0, rows = 0, S = 9, G = 4, timer = null;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var seed = 7;
+  function rnd(){ seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+  function palette(){
+    var cs = getComputedStyle(root);
+    return [cs.getPropertyValue("--pixel-a").trim(), cs.getPropertyValue("--pixel-b").trim(), cs.getPropertyValue("--pixel-c").trim(), cs.getPropertyValue("--lime").trim()];
+  }
+  function pick(){
+    var r = rnd();
+    if(r < .5) return null;
+    var p = rnd(), c = p < .03 ? 3 : p < .4 ? 0 : p < .7 ? 1 : 2;
+    return { c: c, a: .25 + rnd() * .75 };
+  }
+  function drawPixels(keep){
+    if(!canvas) return;
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    if(!w || !h) return;
+    var nc = Math.floor((w + G) / (S + G)), nr = Math.floor((h + G) / (S + G));
+    if(!keep || nc !== cols || nr !== rows){
+      cols = nc; rows = nr; seed = 7; cells = [];
+      for(var i = 0; i < cols * rows; i++) cells.push(pick());
+    }
+    canvas.width = w; canvas.height = h;
+    var ctx = canvas.getContext("2d"), pal = palette();
+    var ox = Math.floor((w - (cols * (S + G) - G)) / 2);
+    ctx.clearRect(0, 0, w, h);
+    for(var y = 0; y < rows; y++) for(var x = 0; x < cols; x++){
+      var cell = cells[y * cols + x]; if(!cell) continue;
+      ctx.globalAlpha = cell.a; ctx.fillStyle = pal[cell.c];
+      ctx.fillRect(ox + x * (S + G), y * (S + G), S, S);
+    }
+    ctx.globalAlpha = 1;
+  }
+  function twinkle(){
+    for(var k = 0; k < 6; k++){ var i = Math.floor(Math.random() * cells.length); cells[i] = Math.random() < .5 ? null : { c: Math.random() < .03 ? 3 : Math.floor(Math.random() * 3), a: .25 + Math.random() * .75 }; }
+    drawPixels(true);
+  }
+  if(canvas){
+    canvas.addEventListener("pointermove", function(e){
+      var r = canvas.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / (S + G)), y = Math.floor((e.clientY - r.top) / (S + G));
+      var i = y * cols + x; if(i >= 0 && i < cells.length){ cells[i] = { c: Math.random() < .2 ? 3 : 0, a: 1 }; drawPixels(true); }
+    });
+    window.addEventListener("resize", function(){ drawPixels(true); });
+    if(!reduce) timer = setInterval(twinkle, 140);
+  }
+  applyTheme(pref === "light" || pref === "dark" ? pref : "auto");
+  if(window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ drawPixels(true); });
+})();
+</script>
+
+</body>
+</html>
