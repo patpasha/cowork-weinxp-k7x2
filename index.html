@@ -484,6 +484,16 @@ td em{color:var(--muted)}
 .ladder>div.on .n,.ladder>div.on span.d{color:var(--on-lime)}
 .ladder-cap{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
 @media (max-width:640px){.ladder{grid-template-columns:minmax(0,1fr)}.ladder>div{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:baseline;gap:10px}}
+.res{margin-top:22px;border:1px solid var(--line);background:var(--sheet)}
+.res-head{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);background:var(--ink);padding:6px 14px}
+.res-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.res-list a{display:flex;flex-direction:column;gap:2px;padding:12px 14px;text-decoration:none;color:var(--ink);border-right:1px solid var(--line)}
+.res-list a:last-child{border-right:0}
+.res-list a:hover{background:var(--accent-soft)}
+.res-list b{font-weight:600;letter-spacing:-.015em}
+.res-list span{font-family:var(--f-mono);font-size:.66rem;color:var(--muted);letter-spacing:.04em}
+.res-list i{font-style:normal;color:var(--accent);font-family:var(--f-mono);font-size:.7rem}
+@media (max-width:640px){.res-list{grid-template-columns:minmax(0,1fr)}.res-list a{border-right:0;border-bottom:1px solid var(--line)}.res-list a:last-child{border-bottom:0}}
 .dl-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin:12px 0 6px}
 .dl-msg{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
 .foot{margin-top:60px;font-size:.82rem;color:var(--muted)}
@@ -586,6 +596,14 @@ td em{color:var(--muted)}
         <li><b>Compte</b> offre Team du cabinet</li>
         <li><b>Niveau</b> débutant complet</li>
       </ul>
+      <div class="res" id="ressources">
+        <div class="res-head">Ressources à télécharger</div>
+        <div class="res-list">
+          <a href="https://drive.google.com/file/d/1oiqRtTQ7n6upZq6I-2ORKdxAL6Y0XIgy/view?usp=drive_link" target="_blank" rel="noopener"><i>↓ PDF · 11 pages</i><b>Support de fin de formation</b><span>L'essentiel à garder, à vous pour toujours</span></a>
+          <a href="https://drive.google.com/uc?export=download&amp;id=1Egat_P5Hsg6WJ2ubIjNx9blsNbCxk7w_" target="_blank" rel="noopener"><i>↓ ZIP · 100 Ko</i><b>Dossier d'entraînement</b><span>Samoussa Fournaise, pour les exercices</span></a>
+          <a href="https://drive.google.com/drive/folders/1ue3uap1phRrp6WYcjYbeMxKh_xdZXEoo?usp=drive_link" target="_blank" rel="noopener"><i>↓ WORD</i><b>Fiche cas et mémo participant</b><span>Pour les ateliers (annexe F)</span></a>
+        </div>
+      </div>
       <div class="parcours">
         <div class="track"><a class="cell ess" href="#m0" data-mod="m0" aria-label="Module 00">00</a><a class="cell ess" href="#m1" data-mod="m1" aria-label="Module 01">01</a><a class="cell ess" href="#m2" data-mod="m2" aria-label="Module 02">02</a><a class="cell ess" href="#m3" data-mod="m3" aria-label="Module 03">03</a><a class="cell ess" href="#m4" data-mod="m4" aria-label="Module 04">04</a><a class="cell ess" href="#m5" data-mod="m5" aria-label="Module 05">05</a><a class="cell ess" href="#m6" data-mod="m6" aria-label="Module 06">06</a><a class="cell ess" href="#m7" data-mod="m7" aria-label="Module 07">07</a><a class="cell ess" href="#m8" data-mod="m8" aria-label="Module 08">08</a><a class="cell n2" href="#m9" data-mod="m9" aria-label="Module 09">09</a><a class="cell n2" href="#m10" data-mod="m10" aria-label="Module 10">10</a><a class="cell n2" href="#m11" data-mod="m11" aria-label="Module 11">11</a><a class="cell n2" href="#m12" data-mod="m12" aria-label="Module 12">12</a><a class="cell n2" href="#m13" data-mod="m13" aria-label="Module 13">13</a>
           <span class="track-lab" style="grid-column:1/10">Parcours essentiel</span>
@@ -623,7 +641,7 @@ td em{color:var(--muted)}
         <li><strong>Commencez par le parcours essentiel.</strong> Les modules 00 à 08 (environ 3 h 35) suffisent pour être autonome. Suivez-les dans l'ordre : chacun s'appuie sur le précédent. Le parcours avancé (modules 09 à 13, environ 1 h 45) se fait après quelques semaines de pratique, ou en atelier accompagné (annexe F).</li>
         <li><strong>Faites les exercices.</strong> Lire ne suffit pas. On apprend l'IA comme on apprend un logiciel de comptabilité : en saisissant.</li>
         <li><strong>Copiez les textes proposés.</strong> Chaque encadré « À copier dans Cowork » a un bouton <em>Copier</em>. Collez-le dans Claude, puis adaptez-le petit à petit avec vos propres mots.</li>
-        <li><strong>Le support PDF de fin de formation</strong> et le dossier d'entraînement sont dans le <a href="https://drive.google.com/drive/folders/1ue3uap1phRrp6WYcjYbeMxKh_xdZXEoo?usp=drive_link" target="_blank" rel="noopener">Google Drive de la formation</a>. Le PDF est à vous, à garder.</li>
+        <li><strong>Le support PDF de fin de formation</strong>, le dossier d'entraînement et la fiche cas se téléchargent depuis la barre <a href="#ressources">« Ressources à télécharger »</a>, en haut de cette page. Le PDF est à vous, à garder.</li>
         <li><strong>Vous participez aux ateliers en petit groupe ?</strong> Tout ce qu'il faut préparer est dans l'<a href="#ateliers">annexe F</a>.</li>
         <li><strong>Cochez votre progression.</strong> En bas de chaque module, le bouton <em>Marquer comme terminé</em> met à jour le sommaire et la barre en haut de la page. Votre progression reste enregistrée dans ce navigateur.</li>
       </ul>
@@ -2822,7 +2840,8 @@ Informations : [coller]</pre></div>
           </div>
         </div>
       </div>
-      </section>
+            <p><a class="done-btn" href="https://drive.google.com/file/d/1oiqRtTQ7n6upZq6I-2ORKdxAL6Y0XIgy/view?usp=drive_link" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Télécharger le support PDF</a></p>
+    </section>
 
     <!-- ================= ANNEXE F ================= -->
     <section class="module" id="ateliers" style="border-bottom:0">
@@ -2970,6 +2989,7 @@ Bloc : Relances clients / Contrôles achats / Documents cabinet
         <p class="note-label">Et après ?</p>
         <p>Refaites la démarche sur votre propre dossier, à votre rythme. Partagez dans le canal ce qui a marché, et ce qui a raté. Une skill de groupe qui fonctionne bien peut être proposée au référent IA pour être publiée pour tout le cabinet (module 10).</p>
       </aside>
+      
       <p class="foot">Guide établi en octobre 2026 à partir de la documentation officielle d'Anthropic. L'interface de Claude évolue régulièrement : en cas de différence, l'application fait foi.</p>
       <div class="credit"><a class="brand" href="https://thejarvis.company/100xWorks/" target="_blank" rel="noopener" aria-label="100xWorks"><span class="mark" aria-hidden="true">✳</span>100x<span>works</span></a><span>Construisez avec l’IA. Gardez la maîtrise.</span></div>
     </section>
