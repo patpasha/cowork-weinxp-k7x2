@@ -1212,7 +1212,25 @@ Ta façon de travailler avec moi :
         <p>Quel que soit le mode, <strong>Claude demande toujours votre permission avant de supprimer définitivement un fichier.</strong></p>
       </aside>
 
-      <h3>4. Deux réglages utiles à connaître</h3>
+      <h3>4. Choisir le modèle</h3>
+      <p>Claude existe en plusieurs <strong>modèles</strong>, du plus rapide au plus puissant. Le nom du modèle utilisé s'affiche dans la zone de saisie : cliquez dessus pour en changer. Vous pouvez en changer à chaque tâche, ou en cours de tâche.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Modèle</th><th>Pour quoi</th><th>Exemples</th><th>Consommation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Haiku</strong></td><td>Les questions simples, les réponses courtes, quand vous voulez aller vite</td><td><em>« Quelle est la date limite de dépôt de la liasse ? », reformuler un mail court</em></td><td><span class="pill pill--ok">Faible</span></td></tr>
+            <tr><td><strong>Sonnet</strong></td><td>Le travail de tous les jours : rédiger, résumer, créer un tableau. Le bon choix en cas de doute</td><td><em>Un courrier de relance, le résumé d'une lettre de mission, un échéancier Excel</em></td><td><span class="pill pill--neutral">Moyenne</span></td></tr>
+            <tr><td><strong>Opus</strong></td><td>Les contrôles, les analyses, les longs documents : quand la rigueur compte plus que la vitesse</td><td><em>Rapprocher les factures et le grand livre, contrôler un FEC, analyser un contrat de 30 pages</em></td><td><span class="pill pill--warn">Élevée</span></td></tr>
+            <tr><td><strong>Fable</strong></td><td>Les tâches longues, en nombreuses étapes, où une erreur coûterait cher</td><td><em>Préparer en une fois tous les livrables d'un rendez-vous bilan</em></td><td><span class="pill pill--stop">Très élevée</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="note note--key">
+        <p class="note-label">La règle simple</p>
+        <p><strong>Laissez le modèle proposé par défaut.</strong> Passez à <strong>Opus</strong> pour un contrôle, une analyse ou un long document, et à <strong>Haiku</strong> pour une question rapide. Gardez <strong>Fable</strong> pour les rares tâches longues et critiques : plus un modèle est puissant, plus vite vous atteignez votre limite d'utilisation. Les numéros de version (Sonnet 5.5…) changent régulièrement : seul le nom compte.</p>
+      </aside>
+
+      <h3>5. Deux réglages utiles à connaître</h3>
       <ul>
         <li><strong>La mémoire.</strong> Claude se souvient de vos échanges précédents pour mieux vous aider. Pour une tâche ponctuelle où vous ne voulez pas qu'il s'appuie sur l'historique, désactivez la mémoire dans le menu <span class="path">+</span> <em>avant</em> d'envoyer votre premier message.</li>
         <li><strong>Votre consommation.</strong> Les tâches longues consomment plus que les questions simples. Vous suivez votre utilisation dans <span class="path">Settings (Réglages) › Usage (Utilisation)</span>. Astuce : regroupez les demandes liées dans une même tâche, et ouvrez une nouvelle tâche pour un sujet différent.</li>
@@ -1417,6 +1435,7 @@ Toutes les personnes, adresses et numéros doivent être inventés. Montre-moi t
             <tr><td>Un chiffre est faux, ou semble inventé.</td><td><em>« Le montant de la facture de mars de la Minoterie des Hauts est faux : c'est 718,78 € TTC. D'où vient ton chiffre ? Corrige et revérifie tous les autres un par un. »</em></td></tr>
             <tr><td>Claude a mal compris la demande.</td><td><em>« Je me suis mal exprimé. Ce que je veux, c'est… Recommence à partir de là. »</em></td></tr>
             <tr><td>Le format ne va pas.</td><td><em>« Je voulais un fichier Excel, pas un tableau dans la conversation. »</em></td></tr>
+            <tr><td>Le résultat est faible sur une tâche complexe (contrôle, analyse, long document).</td><td>Relancez la même demande avec un modèle plus puissant, comme <strong>Opus</strong> (module 4).</td></tr>
             <tr><td>Le résultat est juste « moyen ».</td><td><em>« Propose-moi trois versions différentes. »</em> ou <em>« Qu'est-ce qui te manque pour faire mieux ? »</em></td></tr>
             <tr><td>Claude tourne en rond ou s'embrouille.</td><td>Arrêtez la tâche, ouvrez-en une nouvelle et <strong>découpez</strong> : une étape par demande.</td></tr>
             <tr><td>Claude veut ouvrir ou modifier un fichier inattendu.</td><td>Cliquez sur <em>Deny</em> (Refuser), puis : <em>« Ne touche qu'au fichier X. »</em></td></tr>
@@ -1656,6 +1675,7 @@ Ne corrige rien : liste seulement.</pre>
           <summary>Claude n'a trouvé qu'un seul écart ? Parfait pour s'entraîner</summary>
           <p>Relancez : <em>« Il y a deux écarts dans ce dossier, tu n'en as trouvé qu'un. Reprends ligne par ligne et montre-moi ta méthode. »</em></p>
           <p>Retenez la leçon : pour un contrôle, demandez à Claude d'<strong>expliquer sa méthode</strong>. Ça vous permet de juger si son travail est fiable.</p>
+          <p>Autre levier : relancez la même demande avec le modèle <strong>Opus</strong> (module 4), plus rigoureux sur les contrôles.</p>
         </details>
         <details>
           <summary>Voir le corrigé</summary>
@@ -2728,7 +2748,7 @@ Informations : [coller]</pre></div>
       </details>
       <details>
         <summary>J'ai atteint ma limite d'utilisation.</summary>
-        <p>Les tâches longues consomment davantage. Consultez <span class="path">Settings (Réglages) › Usage (Utilisation)</span>. Pour économiser : regroupez les demandes liées dans une même tâche, ouvrez une nouvelle tâche pour chaque nouveau sujet, et précisez quand une réponse courte suffit.</p>
+        <p>Les tâches longues consomment davantage. Consultez <span class="path">Settings (Réglages) › Usage (Utilisation)</span>. Pour économiser : regroupez les demandes liées dans une même tâche, ouvrez une nouvelle tâche pour chaque nouveau sujet, précisez quand une réponse courte suffit, et utilisez un modèle plus léger (Sonnet ou Haiku) pour les tâches simples (module 4).</p>
       </details>
       <details>
         <summary>À qui m'adresser si je suis bloqué ?</summary>
@@ -2753,6 +2773,7 @@ Informations : [coller]</pre></div>
         <div><dt>Hallucination</dt><dd>Une information fausse présentée avec assurance par l'IA. D'où la vérification systématique.</dd></div>
         <div><dt>Instructions globales</dt><dd>Vos consignes permanentes, lues par Claude avant chaque tâche.</dd></div>
         <div><dt>Mémoire</dt><dd>La capacité de Claude à se souvenir de vos échanges précédents. Désactivable pour une tâche.</dd></div>
+        <div><dt>Modèle</dt><dd>La version de Claude utilisée pour une tâche : Haiku (rapide), Sonnet (polyvalent), Opus (rigoureux), Fable (le plus puissant). Se choisit dans la zone de saisie.</dd></div>
         <div><dt>Mode d'approbation</dt><dd>Le niveau de contrôle : manuel, automatique ou sans confirmation.</dd></div>
         <div><dt>Plugin (extension)</dt><dd>Un pack métier qui regroupe skills, connecteurs et commandes.</dd></div>
         <div><dt>Projet</dt><dd>Un espace qui rassemble fichiers, consignes, tâches et mémoire pour un même sujet.</dd></div>
@@ -2788,6 +2809,7 @@ Informations : [coller]</pre></div>
             <tr><td><strong>Write skill instructions</strong></td><td>Écrire les instructions</td></tr>
             <tr><td><strong>Upload a skill</strong></td><td>Importer une skill</td></tr>
             <tr><td><strong>Edit / Save / Cancel</strong></td><td>Modifier / Enregistrer / Annuler</td></tr>
+            <tr><td><strong>Model</strong></td><td>Modèle</td></tr>
             <tr><td><strong>Usage</strong></td><td>Utilisation</td></tr>
             <tr><td><strong>Can view / Can edit</strong></td><td>Peut consulter / Peut modifier</td></tr>
             <tr><td><strong>Do With You</strong></td><td>Faire avec vous (les ateliers pratiques)</td></tr>
