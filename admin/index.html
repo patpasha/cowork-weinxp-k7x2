@@ -622,12 +622,32 @@ td em{color:var(--muted)}
           <tbody>
             <tr><td><strong>Enable for your organization</strong> (Activer pour votre organisation)</td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--ok">Activé</span></td><td>Interrupteur général de Cowork.</td></tr>
             <tr><td><strong>Sessions cloud</strong></td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--ok">Activé</span></td><td>Nécessaire pour les tâches planifiées et pour suivre une tâche depuis le web ou le mobile.</td></tr>
-            <tr><td><strong>Navigateur intégré</strong></td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--warn">Désactivé pendant le pilote</span></td><td>La navigation autonome sur le web expose à des contenus piégés (injection d'instructions). À ouvrir quand l'équipe maîtrise les bases.</td></tr>
+            <tr><td><strong>Navigateur intégré</strong></td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--warn">Désactivé pendant le pilote</span></td><td>La navigation autonome sur le web expose à des contenus piégés (injection d'instructions). À ouvrir quand l'équipe maîtrise les bases. Voir aussi Claude dans Chrome, ci-dessous.</td></tr>
             <tr><td><strong>Allow "Automatically approve" mode</strong> (Autoriser le mode « Approuver automatiquement »)</td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--ok">Activé</span></td><td>Le guide collaborateurs impose le mode manuel au début, puis autorise le mode automatique, qui garde des contrôles de sécurité.</td></tr>
             <tr><td><strong>Allow "Always allow" for connector tools</strong> (Autoriser « Toujours autoriser » pour les outils des connecteurs)</td><td><span class="pill pill--neutral">Désactivé</span></td><td><span class="pill pill--stop">Laisser désactivé</span></td><td>Oblige une approbation à chaque tâche pour les actions des connecteurs, comme la lecture des mails.</td></tr>
           </tbody>
         </table>
       </div>
+
+
+      <h3>Navigation sur le web : navigateur intégré et Claude dans Chrome</h3>
+      <p>Claude peut travailler dans un navigateur de deux façons : le <strong>navigateur intégré</strong> (réglé ci-dessus, séparé des comptes du collaborateur) et l'extension <strong>Claude dans Chrome</strong>, qui agit dans le Chrome du collaborateur, avec les sites et les comptes où il est déjà connecté. <strong>Sur l'offre Team, l'extension est activée par défaut</strong> : sans réglage, un collaborateur peut l'installer et faire agir Claude sur ses espaces connectés.</p>
+      <p><span class="path">Organization settings (Paramètres de l'organisation) › Claude in Chrome</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Réglage</th><th>Par défaut</th><th>Recommandation</th><th>Pourquoi</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Claude in Chrome</strong> (l'extension)</td><td><span class="pill pill--neutral">Activé</span></td><td><span class="pill pill--warn">Désactivé pendant le pilote</span></td><td>C'est l'option la plus risquée : Claude agit avec les accès du collaborateur. À rouvrir plus tard, pour quelques sites précis.</td></tr>
+            <tr><td><strong>Liste de sites bloqués</strong> (blocklist)</td><td><span class="pill pill--neutral">Vide</span></td><td><span class="pill pill--ok">À remplir dès maintenant</span></td><td>Elle s'applique aux deux navigateurs. Y mettre les espaces connectés : espaces professionnels impots.gouv (mais pas le BOFiP, utile à la recherche), net-entreprises, espaces URSSAF, banques, et l'interface web de Pennylane (on passe par le connecteur, en lecture seule).</td></tr>
+            <tr><td><strong>Liste de sites autorisés</strong> (allowlist)</td><td><span class="pill pill--neutral">Vide</span></td><td><span class="pill pill--neutral">Facultatif</span></td><td>Pour aller plus loin : n'autoriser que des sites de confiance (BOFiP, Légifrance, service-public.fr, URSSAF en consultation publique). Plus sûr, mais plus contraignant.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Quand les deux navigateurs sont activés, chaque collaborateur choisit le sien dans <span class="path">Settings (Réglages) › Cowork › Preferred browser (Navigateur préféré)</span>. Le guide collaborateurs (module 11) présente les deux options, les bons usages et ce que Claude ne fait jamais sur le web.</p>
+      <aside class="note note--warn">
+        <p class="note-label">Les domaines exacts</p>
+        <p>Faites établir la liste précise des adresses à bloquer par le prestataire informatique : un même site public (impots.gouv par exemple) héberge à la fois des pages de consultation, utiles, et des espaces connectés, à bloquer.</p>
+      </aside>
 
       <h3>Skills et création de fichiers</h3>
       <p><span class="path">Organization settings (Paramètres de l'organisation) › Plugins &amp; skills (Extensions et compétences) › Policy (Règles)</span></p>
@@ -656,6 +676,8 @@ td em{color:var(--muted)}
         <li class="tasks-head"><span>À faire</span><span class="tasks-count"></span></li>
         <li><label><input type="checkbox" id="t-a4-cowork"><span>Régler la page Cowork selon le tableau <span class="who">Owner</span></span></label></li>
         <li><label><input type="checkbox" id="t-a4-policy"><span>Régler la page Policy (exécution de code, skills, publication avec validation) <span class="who">Owner</span></span></label></li>
+        <li><label><input type="checkbox" id="t-a4-chrome"><span>Décider du sort de Claude dans Chrome et remplir la liste des sites bloqués <span class="who">Owner</span><small>L'extension est activée par défaut sur Team : à régler avant que les collaborateurs ne la découvrent.</small></span></label></li>
+        <li><label><input type="checkbox" id="t-a4-nav-annonce"><span>Annoncer aux collaborateurs les navigateurs disponibles et la règle du cabinet <span class="who">Référent</span><small>Le texte est prêt dans le guide collaborateurs, module 11 et charte du module 2.</small></span></label></li>
         <li><label><input type="checkbox" id="t-a4-memoire"><span>Rendre la mémoire disponible <span class="who">Owner</span></span></label></li>
         <li><label><input type="checkbox" id="t-a4-note"><span>Noter les réglages choisis et leur date dans un document interne <span class="who">Owner</span><small>Utile pour l'audit, et pour savoir quoi rouvrir après le pilote.</small></span></label></li>
       </ul>

@@ -525,6 +525,9 @@ td em{color:var(--muted)}
   .pixels{height:80px}
 }
 
+.update-line{margin:-12px 0 18px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em}
+.update-line a{text-decoration:none}
+.update-line a:hover{text-decoration:underline}
 /* ---------- Affichage par pages : un module à la fois ---------- */
 html.paged .col > .hero, html.paged .col > section.module{display:none}
 html.paged .col > .hero.is-current, html.paged .col > section.module.is-current{display:block}
@@ -589,7 +592,7 @@ html:not(.paged) .pager, html:not(.paged) .start-row{display:none}
     <ol>
       <li><a href="#m9"><span class="num">09</span><span>Les projets</span><span class="tick"></span></a></li>
       <li><a href="#m10"><span class="num">10</span><span>Les skills</span><span class="tick"></span></a></li>
-      <li><a href="#m11"><span class="num">11</span><span>Les connecteurs</span><span class="tick"></span></a></li>
+      <li><a href="#m11"><span class="num">11</span><span>Les connecteurs et le navigateur</span><span class="tick"></span></a></li>
       <li><a href="#m12"><span class="num">12</span><span>Les plugins</span><span class="tick"></span></a></li>
       <li><a href="#m13"><span class="num">13</span><span>Les tâches planifiées</span><span class="tick"></span></a></li>
     </ol>
@@ -601,6 +604,7 @@ html:not(.paged) .pager, html:not(.paged) .start-row{display:none}
       <li><a href="#glossaire"><span class="num">D</span><span>Glossaire</span></a></li>
       <li><a href="#memo"><span class="num">E</span><span>Fiche mémo</span></a></li>
       <li><a href="#ateliers"><span class="num">F</span><span>Ateliers pratiques</span></a></li>
+      <li><a href="#nouveautes"><span class="num">G</span><span>Quoi de neuf ?</span></a></li>
     </ol>
     <button class="toc-reset" id="resetBtn" type="button">Remettre ma progression à zéro</button>
     <button class="toc-reset view-toggle" id="viewBtn" type="button">Tout afficher sur une page</button>
@@ -613,10 +617,11 @@ html:not(.paged) .pager, html:not(.paged) .start-row{display:none}
     <header class="hero" id="accueil">
       <canvas class="pixels" id="pixels" aria-hidden="true"></canvas>
       <p class="eyebrow">Guide pratique · Cabinet d'expertise comptable</p>
+      <p class="update-line"><a href="#nouveautes">✳ Mis à jour le 14/10/2026 : voir les nouveautés →</a></p>
       <h1>Travailler avec Claude Cowork.<br><span>Pas à pas.</span></h1>
       <p class="lead">De l'installation à vos premiers documents, puis aux outils avancés. Ce guide est écrit pour des personnes qui n'ont jamais utilisé d'IA au travail. Vous avancez à votre rythme, sur un dossier client fictif, sans risque de rien casser.</p>
       <ul class="facts">
-        <li><b>Durée</b> environ 5 h 20, dont 3 h 35 d'essentiel</li>
+        <li><b>Durée</b> environ 5 h 35, dont 3 h 35 d'essentiel</li>
         <li><b>Poste</b> Windows + Microsoft 365</li>
         <li><b>Compte</b> offre Team du cabinet</li>
         <li><b>Niveau</b> débutant complet</li>
@@ -645,7 +650,7 @@ html:not(.paged) .pager, html:not(.paged) .start-row{display:none}
           <div class="pc n2">
             <span class="lvl lvl-n2">Parcours avancé</span>
             <h3>Automatiser et capitaliser</h3>
-            <p class="meta">Modules 09 à 13 · environ 1 h 45 · après 2 à 4 semaines de pratique, ou en atelier</p>
+            <p class="meta">Modules 09 à 13 · environ 2 h · après 2 à 4 semaines de pratique, ou en atelier</p>
             <p>Projets, skills, connecteurs, plugins et tâches planifiées : pour aller plus vite sur ce que vous faites déjà.</p>
             <p class="pc-prog" id="n2Prog">0 / 5 modules terminés</p>
           </div>
@@ -667,7 +672,7 @@ html:not(.paged) .pager, html:not(.paged) .start-row{display:none}
 
       <h3 style="margin-top:0">Comment utiliser ce guide</h3>
       <ul>
-        <li><strong>Commencez par le parcours essentiel.</strong> Les modules 00 à 08 (environ 3 h 35) suffisent pour être autonome. Suivez-les dans l'ordre : chacun s'appuie sur le précédent. Le parcours avancé (modules 09 à 13, environ 1 h 45) se fait après quelques semaines de pratique, ou en atelier accompagné (annexe F).</li>
+        <li><strong>Commencez par le parcours essentiel.</strong> Les modules 00 à 08 (environ 3 h 35) suffisent pour être autonome. Suivez-les dans l'ordre : chacun s'appuie sur le précédent. Le parcours avancé (modules 09 à 13, environ 2 h) se fait après quelques semaines de pratique, ou en atelier accompagné (annexe F).</li>
         <li><strong>Faites les exercices.</strong> Lire ne suffit pas. On apprend l'IA comme on apprend un logiciel de comptabilité : en saisissant.</li>
         <li><strong>Copiez les textes proposés.</strong> Chaque encadré « À copier dans Cowork » a un bouton <em>Copier</em>. Collez-le dans Claude, puis adaptez-le petit à petit avec vos propres mots.</li>
         <li><strong>Le support PDF de fin de formation</strong>, le dossier d'entraînement et la fiche cas se téléchargent depuis la barre <a href="#ressources">« Ressources à télécharger »</a>, en haut de cette page. Le PDF est à vous, à garder.</li>
@@ -883,6 +888,7 @@ html:not(.paged) .pager, html:not(.paged) .start-row{display:none}
             <li>Pièces comptables d'un dossier, sur copie, dans un dossier dédié</li>
             <li>Mails clients via le connecteur Outlook, en lecture</li>
             <li>Données Pennylane via le connecteur, en lecture seule</li>
+            <li>Recherche sur des sites publics avec le navigateur de Claude</li>
           </ul>
         </div>
         <div>
@@ -892,6 +898,7 @@ html:not(.paged) .pager, html:not(.paged) .start-row{display:none}
             <li>Bulletins de paie nominatifs, données de santé, n° de sécurité sociale</li>
             <li>Envoi direct d'un mail ou document au client par Claude</li>
             <li>Toute donnée d'un client qui a refusé l'usage de l'IA</li>
+            <li>Faire agir Claude sur un espace connecté (impots.gouv, net-entreprises, URSSAF, banque) ou lui faire saisir des identifiants</li>
           </ul>
         </div>
       </div>
@@ -2262,14 +2269,15 @@ Pour finaliser votre déclaration de TVA de mars, il nous manque les documents s
     <section class="module" id="m11" data-mod="m11">
       <div class="mod-head">
         <span class="folio">11</span>
-        <span class="mod-meta">20 min · pratique</span><span class="lvl lvl-n2">Parcours avancé</span>
-        <h2>Les connecteurs : brancher Outlook, SharePoint, Teams</h2>
+        <span class="mod-meta">35 min · pratique</span><span class="lvl lvl-n2">Parcours avancé</span>
+        <h2>Les connecteurs et le navigateur</h2>
       </div>
       <div class="goals">
         <p>À la fin de ce module, vous saurez</p>
         <ul>
           <li>connecter Claude à votre messagerie et à vos fichiers Microsoft 365 ;</li>
-          <li>l'utiliser pour retrouver et résumer de l'information, sans rien envoyer à sa place.</li>
+          <li>l'utiliser pour retrouver et résumer de l'information, sans rien envoyer à sa place ;</li>
+          <li>faire chercher de l'information sur le web, en sachant ce que Claude ne doit jamais y faire.</li>
         </ul>
       </div>
 
@@ -2371,6 +2379,104 @@ Pour finaliser votre déclaration de TVA de mars, il nous manque les documents s
           <li><em>Facultatif, si Pennylane est connecté</em> : posez une question sur un dossier que vous connaissez bien, et comparez la réponse avec ce que vous voyez dans Pennylane.</li>
         </ol>
       </div>
+
+      <h3>Claude dans le navigateur <span class="pill pill--ok">Nouveau</span></h3>
+  <p>Claude peut aussi <strong>travailler dans un navigateur</strong> : ouvrir une page, la lire, cliquer, passer d'un onglet à l'autre, recopier une information dans un tableau. C'est très utile pour la recherche documentaire. C'est aussi l'outil qui demande le plus de vigilance, car le web est un espace que ni vous ni le cabinet ne contrôlez.</p>
+
+  <h4>Deux façons de le faire</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>Le navigateur intégré</th><th>Claude dans Chrome</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ce que c'est</strong></td><td>Un navigateur propre à Claude, qui s'ouvre dans l'application</td><td>Une extension ajoutée à votre navigateur Google Chrome</td></tr>
+        <tr><td><strong>Installation</strong></td><td>Aucune</td><td>Depuis le Chrome Web Store, si le cabinet l'autorise</td></tr>
+        <tr><td><strong>Vos comptes</strong></td><td><span class="pill pill--ok">Séparés</span> Claude ne voit aucun site où vous êtes connecté</td><td><span class="pill pill--warn">Partagés</span> Claude utilise les sites où vous êtes déjà connecté</td></tr>
+        <tr><td><strong>Au cabinet</strong></td><td><span class="pill pill--ok">À privilégier</span> Pour la recherche sur des sites publics, si l'administrateur l'a activé</td><td><span class="pill pill--warn">Sur accord</span> Seulement si le cabinet l'autorise, et sur les sites qu'il autorise</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>C'est l'administrateur qui décide des navigateurs disponibles et des sites autorisés : si vous ne voyez pas l'option, c'est sans doute volontaire, renseignez-vous auprès du référent IA. Si les deux sont disponibles, vous choisissez votre navigateur préféré dans <span class="path">Settings (Réglages) › Cowork › Preferred browser (Navigateur préféré)</span>.</p>
+
+  <figure class="shot">
+    <div class="shot-frame"><div class="app" role="img" aria-label="Schéma : Claude consulte un site officiel dans le navigateur intégré et demande l'autorisation">
+      <div class="app-bar"><span>Claude</span><span class="win">–□×</span></div>
+      <div class="app-body three" style="grid-template-columns:120px minmax(0,1fr) 230px">
+        <div class="app-side">
+          <span class="it">＋ New task</span>
+          <span class="it on">TVA des DOM</span>
+          <span class="it">Projects</span>
+        </div>
+        <div class="app-main">
+          <div class="ui-msg-user">Quels sont les taux de TVA à La Réunion ? Cherche sur les sites officiels et donne-moi les liens.</div>
+          <div class="ui-perm">
+            <strong>Claude souhaite ouvrir</strong> <code>bofip.impots.gouv.fr</code> <span class="co">1</span>
+            <div class="ui-btns"><span class="ui-btn">Deny</span><span class="ui-btn dark">Allow</span></div>
+          </div>
+          <div class="ui-msg-claude"><span class="co">2</span> D'après le BOFiP, deux taux s'appliquent… <span style="color:var(--accent)">[lien]</span></div>
+        </div>
+        <div class="app-right">
+          <h5>Browser <span class="co">3</span></h5>
+          <div class="ui-card" style="padding:8px 10px">
+            <div class="ui-sub" style="font-family:var(--f-mono);font-size:10px">bofip.impots.gouv.fr/…</div>
+            <div style="height:6px;background:var(--rule);margin:8px 0 5px;width:80%"></div>
+            <div style="height:6px;background:var(--rule);margin:0 0 5px;width:95%"></div>
+            <div style="height:6px;background:var(--rule);margin:0 0 5px;width:70%"></div>
+            <div style="height:6px;background:var(--accent-soft);border:1px solid var(--accent);margin:0;width:88%"></div>
+          </div>
+          <span class="ui-sub">Claude lit la page, vous la voyez en même temps.</span>
+        </div>
+      </div>
+    </div></div>
+    <figcaption class="shot-cap"><span class="tag">Schéma simplifié · l'interface réelle peut légèrement différer</span><ol class="shot-legend"><li><span class="co">1</span><span>Avant d'ouvrir un site, Claude <strong>demande l'autorisation</strong>. Lisez l'adresse : un site inattendu, c'est <em>Deny</em> (Refuser).</span></li><li><span class="co">2</span><span>La réponse doit citer ses <strong>sources</strong>, avec les liens : vous vérifiez sur la page elle-même.</span></li><li><span class="co">3</span><span>Le <strong>navigateur</strong> s'affiche à côté de la conversation : vous voyez ce que Claude lit et fait.</span></li></ol></figcaption>
+  </figure>
+
+  <h4>Les bons usages au cabinet</h4>
+  <div class="prompt">
+    <div class="prompt-head"><span>Rechercher sur des sites officiels</span><button class="copy" type="button">Copier</button></div>
+    <pre>Cherche sur le BOFiP, Légifrance et service-public.fr ce qui s'applique à [question]. Résume en 10 lignes maximum, avec le lien exact de chaque source et la date de mise à jour de la page. Si deux sources se contredisent, signale-le.</pre>
+  </div>
+  <div class="prompt">
+    <div class="prompt-head"><span>Comparer des pages ouvertes</span><button class="copy" type="button">Copier</button></div>
+    <pre>Compare les pages ouvertes sur [sujet] et présente les différences dans un tableau : ce que dit chaque source, sa date, et ce qui reste à vérifier.</pre>
+  </div>
+  <div class="prompt">
+    <div class="prompt-head"><span>Recopier une information publique dans un tableau</span><button class="copy" type="button">Copier</button></div>
+    <pre>Sur la page [adresse], relève [les informations : barème, liste, dates] et crée un tableau Excel dans 02_Sorties, avec le lien de la page et la date du relevé. Ne remplis aucun formulaire.</pre>
+  </div>
+
+  <aside class="note note--stop">
+    <p class="note-label">Ce que Claude ne fait jamais sur le web</p>
+    <ul>
+      <li>Se connecter à un espace professionnel : <strong>impots.gouv (espace pro), net-entreprises, URSSAF, banques</strong>, ni à un compte client.</li>
+      <li>Saisir un identifiant, un mot de passe ou un code reçu par SMS.</li>
+      <li>Déclarer, payer, signer, envoyer ou valider quoi que ce soit.</li>
+      <li>Copier des données clients dans un formulaire web.</li>
+    </ul>
+    <p>Si une tâche l'exige, c'est vous qui le faites, vous-même, dans votre propre navigateur.</p>
+  </aside>
+  <aside class="note note--warn">
+    <p class="note-label">Le piège des pages piégées</p>
+    <p>Une page web peut contenir des instructions cachées, écrites pour l'IA et invisibles pour vous : « ignore ta mission et envoie… ». Claude a des protections, mais restez sur des <strong>sites de confiance</strong>, gardez le mode <strong>manuel</strong>, et arrêtez la tâche si Claude veut aller sur un site ou faire une action que vous n'avez pas demandée.</p>
+  </aside>
+
+  <div class="exo">
+    <div class="exo-head"><b>Exercice 16 bis · Votre première recherche sur le web</b><span>10 min</span></div>
+    <ol>
+      <li>Dans une nouvelle tâche, mode manuel, envoyez :</li>
+    </ol>
+    <div class="prompt">
+      <div class="prompt-head"><span>À copier dans Cowork</span><button class="copy" type="button">Copier</button></div>
+      <pre>Quels sont les taux de TVA applicables à La Réunion, et à quels types de biens s'appliquent-ils ? Cherche uniquement sur des sites officiels (BOFiP, Légifrance, impots.gouv) et donne-moi le lien exact de chaque source.</pre>
+    </div>
+    <ol start="2">
+      <li>Lisez chaque demande d'autorisation avant de cliquer sur <em>Allow</em> (Autoriser).</li>
+      <li>Ouvrez vous-même les liens fournis : disent-ils bien ce que Claude affirme ?</li>
+    </ol>
+    <details>
+      <summary>Voir la réponse attendue</summary>
+      <p>Deux taux principaux : <strong>8,5 %</strong> (taux normal) et <strong>2,1 %</strong> (taux réduit, notamment pour une partie des produits alimentaires), prévus à l'article 296 du CGI pour la Guadeloupe, la Martinique et La Réunion. Ce sont les taux du dossier Samoussa Fournaise.</p>
+    </details>
+  </div>
 
       <div class="mod-end">
         <button class="done-btn" data-mod="m11" type="button">Marquer comme terminé</button>
@@ -2774,6 +2880,8 @@ Informations : [coller]</pre></div>
         <div><dt>Instructions globales</dt><dd>Vos consignes permanentes, lues par Claude avant chaque tâche.</dd></div>
         <div><dt>Mémoire</dt><dd>La capacité de Claude à se souvenir de vos échanges précédents. Désactivable pour une tâche.</dd></div>
         <div><dt>Modèle</dt><dd>La version de Claude utilisée pour une tâche : Haiku (rapide), Sonnet (polyvalent), Opus (rigoureux), Fable (le plus puissant). Se choisit dans la zone de saisie.</dd></div>
+        <div><dt>Navigateur intégré, Claude dans Chrome</dt><dd>Les deux façons de faire travailler Claude sur le web : un navigateur à lui, séparé de vos comptes, ou une extension dans votre Chrome, qui utilise vos sessions.</dd></div>
+        <div><dt>Injection d'instructions</dt><dd>Des instructions cachées dans une page web ou un document, écrites pour détourner l'IA. D'où les sites de confiance et le mode manuel.</dd></div>
         <div><dt>Mode d'approbation</dt><dd>Le niveau de contrôle : manuel, automatique ou sans confirmation.</dd></div>
         <div><dt>Plugin (extension)</dt><dd>Un pack métier qui regroupe skills, connecteurs et commandes.</dd></div>
         <div><dt>Projet</dt><dd>Un espace qui rassemble fichiers, consignes, tâches et mémoire pour un même sujet.</dd></div>
@@ -2810,6 +2918,7 @@ Informations : [coller]</pre></div>
             <tr><td><strong>Upload a skill</strong></td><td>Importer une skill</td></tr>
             <tr><td><strong>Edit / Save / Cancel</strong></td><td>Modifier / Enregistrer / Annuler</td></tr>
             <tr><td><strong>Model</strong></td><td>Modèle</td></tr>
+            <tr><td><strong>Preferred browser</strong></td><td>Navigateur préféré</td></tr>
             <tr><td><strong>Usage</strong></td><td>Utilisation</td></tr>
             <tr><td><strong>Can view / Can edit</strong></td><td>Peut consulter / Peut modifier</td></tr>
             <tr><td><strong>Do With You</strong></td><td>Faire avec vous (les ateliers pratiques)</td></tr>
@@ -2895,7 +3004,7 @@ Informations : [coller]</pre></div>
     </section>
 
     <!-- ================= ANNEXE F ================= -->
-    <section class="module" id="ateliers" style="border-bottom:0">
+    <section class="module" id="ateliers">
       <div class="mod-head">
         <span class="folio">F</span>
         <span class="mod-meta">Annexe · phase « Do With You »</span>
@@ -3041,6 +3150,48 @@ Bloc : Relances clients / Contrôles achats / Documents cabinet
         <p>Refaites la démarche sur votre propre dossier, à votre rythme. Partagez dans le canal ce qui a marché, et ce qui a raté. Une skill de groupe qui fonctionne bien peut être proposée au référent IA pour être publiée pour tout le cabinet (module 10).</p>
       </aside>
       
+
+    </section>
+
+    <!-- ================= ANNEXE G ================= -->
+    <section class="module" id="nouveautes" style="border-bottom:0">
+      <div class="mod-head">
+        <span class="folio">G</span>
+        <span class="mod-meta">Annexe · mise à jour le 14/10/2026</span>
+        <h2>Quoi de neuf ?</h2>
+      </div>
+      <p>Claude évolue vite, et ce guide aussi. Cette page résume ce qui a changé, du plus récent au plus ancien, pour que vous sachiez quoi relire.</p>
+
+      <h3>Dans ce guide</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Ce qui change</th><th>Où</th></tr></thead>
+          <tbody>
+            <tr><td><strong>14/10/2026</strong></td><td>Nouvelle section « Claude dans le navigateur », avec l'exercice 16 bis. La charte précise ce que Claude ne fait jamais sur le web.</td><td><a href="#m11">Module 11</a>, <a href="#m2">module 2</a></td></tr>
+            <tr><td><strong>08/10/2026</strong></td><td>Nouvelle section « Choisir le modèle » (Haiku, Sonnet, Opus, Fable). Astuce : relancer avec Opus quand un contrôle reste incomplet. Le support PDF est mis à jour.</td><td><a href="#m4">Module 4</a>, modules 6 et 8, <a href="#ressources">PDF</a></td></tr>
+            <tr><td><strong>06/10/2026</strong></td><td>Le guide s'affiche un module à la fois, avec les boutons Précédent et Suivant. Le lien « Tout afficher sur une page », en bas du sommaire, remet l'affichage complet.</td><td>Tout le guide</td></tr>
+            <tr><td><strong>05/10/2026</strong></td><td>Version de lancement, avec les ateliers en petit groupe.</td><td><a href="#ateliers">Annexe F</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Dans l'application Claude</h3>
+      <p>Les nouveautés d'Anthropic qui vous concernent, et ce qu'elles changent pour vous.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Depuis</th><th>Nouveauté</th><th>Pour vous</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Octobre 2026</strong></td><td>Navigation sur le web : le navigateur intégré et l'extension Claude dans Chrome</td><td>Disponibles selon les réglages du cabinet. Les règles sont au <a href="#m11">module 11</a>.</td></tr>
+            <tr><td><strong>Septembre et octobre 2026</strong></td><td>Nouvelle génération de modèles, numérotée 5.5 : Opus, Sonnet, puis Haiku</td><td>Rien à changer : la règle du <a href="#m4">module 4</a> reste la même, seul le numéro change dans le menu.</td></tr>
+            <tr><td><strong>Annoncé</strong></td><td>Chat et Cowork fusionnent en une seule interface. Déjà en place pour les offres individuelles, l'offre Team du cabinet suivra.</td><td>Le jour venu, le choix Chat / Cowork disparaît : vous décrivez la tâche et Claude agit. Les instructions globales passent dans <span class="path">Settings (Réglages) › General (Général)</span>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="note note--key">
+        <p class="note-label">Un doute sur un écran qui a changé ?</p>
+        <p>Demandez directement à Claude : <em>« Où se trouve [tel réglage] dans Cowork ? »</em>, ou posez la question au référent IA. L'application fait toujours foi sur le guide.</p>
+      </aside>
+
       <p class="foot">Guide établi en octobre 2026 à partir de la documentation officielle d'Anthropic. L'interface de Claude évolue régulièrement : en cas de différence, l'application fait foi.</p>
       <div class="credit"><a class="brand" href="#" aria-label="100xWorks, retour en haut de la page"><span class="mark" aria-hidden="true">✳</span>100x<span>works</span></a><span>Construisez avec l’IA. Gardez la maîtrise.</span></div>
     </section>
